@@ -180,6 +180,17 @@ footer {
     width: 100%;
   }
 
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .bottom-container {
+    height: auto;
+    margin: 0;
+  }
 }
 
 @media (max-width: 1199px) {
@@ -189,10 +200,16 @@ footer {
     align-items: center;
   }
 
+  main {
+    width: 100%;
+  }
+
   section {
     display: flex;
     flex-direction: column;
-  }
+    width: auto;
+    margin: 24px;
+  }   
 
   .top-items {
     order: 2;
@@ -200,14 +217,5 @@ footer {
 
   .top-container img {
     order: 1;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .bottom-container {
-    height: auto;
   }
 }
