@@ -219,13 +219,17 @@ footer {
   .top-container img {
     order: 1;
   }
+
+  .bottom-container {
+    height: 927px;
+  }
 }
 
 @media (max-width: 767px) {
   nav {
     padding: 0 16px;
   }
-
+ 
   .header-slogan br {
     display: inline;
   }
