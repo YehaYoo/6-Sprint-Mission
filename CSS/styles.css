@@ -29,6 +29,7 @@ header {
   justify-content: center;
   align-items: center;
   margin-top: 70px;
+  overflow: hidden;
 }
 
 .header-img {
@@ -187,6 +188,7 @@ footer {
     height: auto;
     margin: 0;
     z-index: 0;
+    overflow: hidden;
   }
 }
 
