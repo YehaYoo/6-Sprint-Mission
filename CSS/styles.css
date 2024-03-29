@@ -10,6 +10,7 @@ nav {
   height: 70px;
   position: fixed;
   inset: 0;
+  z-index: 1;
 }
 
 .signin {
@@ -185,6 +186,7 @@ footer {
   .bottom-container {
     height: auto;
     margin: 0;
+    z-index: 0;
   }
 }
 
