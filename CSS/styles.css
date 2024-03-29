@@ -201,6 +201,7 @@ footer {
 
   main {
     width: 100%;
+    overflow: hidden;
   }
 
   .txt br, .header-slogan br {
@@ -231,7 +232,7 @@ footer {
   nav {
     padding: 0 16px;
   }
- 
+
   .header-slogan br {
     display: inline;
   }
