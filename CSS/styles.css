@@ -2,6 +2,11 @@ body {
   font-family: "Pretendard Variable", Pretendard, sans-serif;
 }
 
+#logo-img{
+  width: 153px;
+  height: 51px;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -33,6 +38,8 @@ header {
 }
 
 .header-img {
+  width: 996px;
+  height: 447px;
   margin-top: auto;
   margin-bottom: 0;
 }
@@ -54,6 +61,11 @@ header {
 .logo, .signin, .header-button {
   cursor: pointer;
 }
+
+.main-img {
+  width: 588px;
+  height: 444px;
+} 
 
 h1 {
   color: var(--grey700);
@@ -125,6 +137,11 @@ align-items: center;
 .content {
   margin-top: auto;
   margin-bottom: 0;
+}
+
+bottom-img {
+  width: 996px;
+  height: 540px;
 }
 
 footer {
