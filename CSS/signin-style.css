@@ -39,6 +39,10 @@ input:focus {
   outline:2px solid var(--blue);
 }
 
+.markInput {
+  outline:1px solid var(--red);
+}
+
 input::placeholder {
   color: var(--gray400)
 }
