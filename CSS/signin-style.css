@@ -43,35 +43,7 @@ input:focus {
   outline:1px solid var(--red);
 }
 
-.email-error {
-  position: relative;
-  font-weight: 600;
-  font-size: 15px;
-  top: -15px;
-  left: 16px;
-  color: var(--red);
-  display: none;
-}
-
-.empty-email {
-  position: relative;
-  font-weight: 600;
-  font-size: 15px;
-  top: -15px;
-  left: 16px;
-  color: var(--red);
-}
-
-.empty-password {
-  position: relative;
-  font-weight: 600;
-  font-size: 15px;
-  top: -15px;
-  left: 16px;
-  color: var(--red);
-}
-
-.password-error {
+.email-error, .empty-email, .empty-password, .password-error, .empty-nickname, .passwordcheck-error {
   position: relative;
   font-weight: 600;
   font-size: 15px;

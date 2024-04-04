@@ -6,6 +6,10 @@ const emptyEmail = document.querySelector('.empty-email');
 const emptyPassword = document.querySelector('.empty-password');
 const passwordError = document.querySelector('.password-error');
 const signinButton = document.querySelector('.signin-button');
+const Nickname = document.querySelector('#nickname-input');
+const emtyNickname = document.querySelector('.empty-nickname');
+const passwordCheck = document.querySelector('#password-check');
+const passwordCheckError = document.querySelector('.passwordcheck-error');
 
 inputItems.addEventListener('focusout', function(e) {
   if (e.target.classList.contains('input-item')) {
@@ -44,6 +48,22 @@ password.addEventListener('focusout', function() {
   }  else {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'none';
-      signinButton.style.pointerEvents = 'auto';
+    }
+});
+
+Nickname.addEventListener('focusout', function() {
+  if(Nickname.value.trim() === '') {
+    emtyNickname.style.display = 'block';
+  } else { 
+    emtyNickname.style.display = 'none';
+    }
+});
+
+passwordCheck.addEventListener('focusout', function() {
+  if(passwordCheck.value !== password.value) {
+    passwordCheckError.style.display = 'block';
+  } else { 
+    passwordCheckError.style.display = 'none';
+    signinButton.style.pointerEvents = 'auto';
     }
 });
