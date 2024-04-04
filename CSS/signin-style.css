@@ -43,6 +43,44 @@ input:focus {
   outline:1px solid var(--red);
 }
 
+.email-error {
+  position: relative;
+  font-weight: 600;
+  font-size: 15px;
+  top: -15px;
+  left: 16px;
+  color: var(--red);
+  display: none;
+}
+
+.empty-email {
+  position: relative;
+  font-weight: 600;
+  font-size: 15px;
+  top: -15px;
+  left: 16px;
+  color: var(--red);
+}
+
+.empty-password {
+  position: relative;
+  font-weight: 600;
+  font-size: 15px;
+  top: -15px;
+  left: 16px;
+  color: var(--red);
+}
+
+.password-error {
+  position: relative;
+  font-weight: 600;
+  font-size: 15px;
+  top: -15px;
+  left: 16px;
+  color: var(--red);
+  display: none;
+}
+
 input::placeholder {
   color: var(--gray400)
 }
@@ -55,6 +93,7 @@ input::placeholder {
   color: var(--white);
   font-weight: 600;
   font-size: 20px;
+  pointer-events: none;
 }
 
 .signin-button:hover {
