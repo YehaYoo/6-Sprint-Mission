@@ -70,7 +70,26 @@ passwordCheck.addEventListener('focusout', function() {
     }
 });
 
+//인풋 요소 조건 충족시까지 로그인 버튼 비활성화
 const signinButton = document.querySelector('.signin-button');
+
+function checkValidity() {
+  const emailValue = email.value.trim();
+  const nicknNameValue = Nickname.value.trim();
+  const passwordValue = password.value.trim();
+  const passwordCheckValue = passwordCheck.value.trim();
+
+return emailValue !== '' && nicknNameValue !== '' && passwordValue !== '' && passwordCheckValue !== '' && passwordCheckValue === passwordValue;
+};
+
+function updateSigninButton() {
+  signinButton.style.pointerEvents = checkValidity() ? "auto" : "none";
+}
+
+email.addEventListener('focusout', updateSigninButton);
+Nickname.addEventListener('focusout', updateSigninButton);
+password.addEventListener('focusout', updateSigninButton);
+passwordCheck.addEventListener('focusout', updateSigninButton);
 
 //visibility 버튼 조작 
 const passwordInputs = Array.from(document.querySelectorAll('.password-input'));

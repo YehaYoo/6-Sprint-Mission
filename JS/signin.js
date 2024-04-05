@@ -50,7 +50,22 @@ password.addEventListener('focusout', function() {
     }
 });
 
+//인풋 요소 조건 충족시까지 로그인 버튼 비활성화
 const signinButton = document.querySelector('.signin-button');
+
+function checkValidity() {
+  const emailValue = email.value.trim();
+  const passwordValue = password.value.trim();
+
+return emailValue !== '' && passwordValue !== '' && password.value.trim().length >= 8;
+};
+
+function updateSigninButton() {
+  signinButton.style.pointerEvents = checkValidity() ? "auto" : "none";
+}
+
+email.addEventListener('focusout', updateSigninButton);
+password.addEventListener('focusout', updateSigninButton);
 
 //visibility 버튼 조작 
 const visibilityToggle = document.querySelector('.visibility');
