@@ -40,13 +40,13 @@ const passwordError = document.querySelector('.password-error');
 password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
     emptyPassword.style.display = 'block';
+    passwordError.style.display = 'none';
   }  else if(password.value.trim().length < 8) {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'block';
   }  else {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'none';
-      signinButton.style.pointerEvents = 'auto';
     }
 });
 

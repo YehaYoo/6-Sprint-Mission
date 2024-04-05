@@ -66,7 +66,6 @@ passwordCheck.addEventListener('focusout', function() {
     passwordCheckError.style.display = 'block';
   } else { 
     passwordCheckError.style.display = 'none';
-    signinButton.style.pointerEvents = 'auto';
     }
 });
 
