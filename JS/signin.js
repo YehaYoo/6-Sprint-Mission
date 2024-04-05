@@ -1,11 +1,6 @@
+
+// 인풋 요소 비었을 때 테두리 설정
 const inputItems = document.querySelector('.input-items');
-const email = document.querySelector('.email');
-const password = document.querySelector('#password');
-const emailError = document.querySelector('.email-error');
-const emptyEmail = document.querySelector('.empty-email');
-const emptyPassword = document.querySelector('.empty-password');
-const passwordError = document.querySelector('.password-error');
-const signinButton = document.querySelector('.signin-button');
 
 inputItems.addEventListener('focusout', function(e) {
   if (e.target.classList.contains('input-item')) {
@@ -17,6 +12,10 @@ inputItems.addEventListener('focusout', function(e) {
    }
 });
 
+// 이메일 에러 메세지
+const email = document.querySelector('.email');
+const emailError = document.querySelector('.email-error');
+const emptyEmail = document.querySelector('.empty-email');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 email.addEventListener('focusout', function() {
@@ -33,6 +32,10 @@ email.addEventListener('focusout', function() {
         }
 });
 
+//비밀번호 에러 메세지
+const password = document.querySelector('#password');
+const emptyPassword = document.querySelector('.empty-password');
+const passwordError = document.querySelector('.password-error');
 
 password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
@@ -47,6 +50,9 @@ password.addEventListener('focusout', function() {
     }
 });
 
+const signinButton = document.querySelector('.signin-button');
+
+//visibility 버튼 조작 
 const visibilityToggle = document.querySelector('.visibility');
 const eyeIcon = document.querySelector('.eye-icon');
 

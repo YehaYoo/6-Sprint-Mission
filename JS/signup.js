@@ -1,16 +1,5 @@
+// 인풋 요소 비었을 때 테두리 설정
 const inputItems = document.querySelector('.input-items');
-const email = document.querySelector('.email');
-const password = document.querySelector('#password');
-const emailError = document.querySelector('.email-error');
-const emptyEmail = document.querySelector('.empty-email');
-const emptyPassword = document.querySelector('.empty-password');
-const passwordError = document.querySelector('.password-error');
-const signinButton = document.querySelector('.signin-button');
-const Nickname = document.querySelector('#nickname-input');
-const emtyNickname = document.querySelector('.empty-nickname');
-const passwordCheck = document.querySelector('#password-check');
-const passwordCheckError = document.querySelector('.passwordcheck-error');
-
 inputItems.addEventListener('focusout', function(e) {
   if (e.target.classList.contains('input-item')) {
       if (e.target.value.trim() === '') {
@@ -21,7 +10,10 @@ inputItems.addEventListener('focusout', function(e) {
    }
 });
 
-
+// 이메일 에러 메세지
+const email = document.querySelector('.email');
+const emailError = document.querySelector('.email-error');
+const emptyEmail = document.querySelector('.empty-email');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 email.addEventListener('focusout', function() {
@@ -38,7 +30,21 @@ email.addEventListener('focusout', function() {
         }
 });
 
+// 닉네임 에러 메세지
+const Nickname = document.querySelector('#nickname-input');
+const emtyNickname = document.querySelector('.empty-nickname');
+Nickname.addEventListener('focusout', function() {
+  if(Nickname.value.trim() === '') {
+    emtyNickname.style.display = 'block';
+  } else { 
+    emtyNickname.style.display = 'none';
+    }
+});
 
+// 비밀번호 에러 메세지
+const password = document.querySelector('#password');
+const emptyPassword = document.querySelector('.empty-password');
+const passwordError = document.querySelector('.password-error');
 password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
     emptyPassword.style.display = 'block';
@@ -52,14 +58,9 @@ password.addEventListener('focusout', function() {
     }
 });
 
-Nickname.addEventListener('focusout', function() {
-  if(Nickname.value.trim() === '') {
-    emtyNickname.style.display = 'block';
-  } else { 
-    emtyNickname.style.display = 'none';
-    }
-});
-
+// 비밀번호 확인 에러 메세지
+const passwordCheck = document.querySelector('#password-check');
+const passwordCheckError = document.querySelector('.passwordcheck-error');
 passwordCheck.addEventListener('focusout', function() {
   if(passwordCheck.value !== password.value) {
     passwordCheckError.style.display = 'block';
@@ -69,19 +70,18 @@ passwordCheck.addEventListener('focusout', function() {
     }
 });
 
+const signinButton = document.querySelector('.signin-button');
 
-
+//visibility 버튼 조작 
 const passwordInputs = Array.from(document.querySelectorAll('.password-input'));
 const visibilityButtons = Array.from(document.querySelectorAll('.visibility'));
 const eyeIcons = Array.from(document.querySelectorAll('.eye-icon'));
-
 
 visibilityButtons.forEach((button, index) => {
   button.addEventListener('click', () => {
     togglePasswordVisibility(index);
   });
 });
-
 
 function togglePasswordVisibility(index) {
   const input = passwordInputs[index];
