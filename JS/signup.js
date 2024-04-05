@@ -42,6 +42,7 @@ email.addEventListener('focusout', function() {
 password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
     emptyPassword.style.display = 'block';
+    passwordError.style.display = 'none';
   }  else if(password.value.trim().length < 8) {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'block';
@@ -67,3 +68,26 @@ passwordCheck.addEventListener('focusout', function() {
     signinButton.style.pointerEvents = 'auto';
     }
 });
+
+
+
+const passwordInputs = Array.from(document.querySelectorAll('.password-input'));
+const visibilityButtons = Array.from(document.querySelectorAll('.visibility'));
+const eyeIcons = Array.from(document.querySelectorAll('.eye-icon'));
+
+
+visibilityButtons.forEach((button, index) => {
+  button.addEventListener('click', () => {
+    togglePasswordVisibility(index);
+  });
+});
+
+
+function togglePasswordVisibility(index) {
+  const input = passwordInputs[index];
+  const eyeIcon = eyeIcons[index];
+
+  input.type = input.type === 'password' ? 'text' : 'password';
+  eyeIcon.src = input.type === 'password' ? '/assets/btn_unvisibility.png' : '/assets/btn_visibility.png';
+}
+

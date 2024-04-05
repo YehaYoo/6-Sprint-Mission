@@ -17,7 +17,6 @@ inputItems.addEventListener('focusout', function(e) {
    }
 });
 
-
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 email.addEventListener('focusout', function() {
@@ -47,3 +46,18 @@ password.addEventListener('focusout', function() {
       signinButton.style.pointerEvents = 'auto';
     }
 });
+
+const visibilityToggle = document.querySelector('.visibility');
+const eyeIcon = document.querySelector('.eye-icon');
+
+function togglePasswordVisibility() {
+  if (password.type === 'password') {
+    password.type = 'text';
+    eyeIcon.src = '/assets/btn_visibility.png';
+  } else {
+    password.type = 'password';
+    eyeIcon.src = '/assets/btn_unvisibility.png'; 
+  }
+}
+
+visibilityToggle.addEventListener('click', togglePasswordVisibility);
