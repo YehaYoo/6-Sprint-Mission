@@ -1,16 +1,16 @@
 
 // 인풋 요소 비었을 때 테두리 설정
-const inputItems = document.querySelector('.input-items');
-
-inputItems.addEventListener('focusout', function(e) {
+function handleInputItemFocusOut(e) {
   if (e.target.classList.contains('input-item')) {
       if (e.target.value.trim() === '') {
           e.target.classList.add('markInput');
       } else {
           e.target.classList.remove('markInput');
       }
-   }
-});
+  }
+}
+const inputItems = document.querySelector('.input-items');
+inputItems.addEventListener('focusout', handleInputItemFocusOut);
 
 // 이메일 에러 메세지
 const email = document.querySelector('.email');
