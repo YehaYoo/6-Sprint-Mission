@@ -118,4 +118,3 @@ function togglePasswordVisibility(index) {
   input.type = input.type === 'password' ? 'text' : 'password';
   eyeIcon.src = input.type === 'password' ? '/assets/btn_unvisibility.png' : '/assets/btn_visibility.png';
 }
-
