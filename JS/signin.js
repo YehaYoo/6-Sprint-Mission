@@ -1,18 +1,4 @@
-
-// 인풋 요소 비었을 때 테두리 설정
-function handleInputItemFocusOut(e) {
-  if (e.target.classList.contains('input-item')) {
-      if (e.target.value.trim() === '') {
-          e.target.classList.add('markInput');
-      } else {
-          e.target.classList.remove('markInput');
-      }
-  }
-}
-const inputItems = document.querySelector('.input-items');
-inputItems.addEventListener('focusout', handleInputItemFocusOut);
-
-// 이메일 에러 메세지
+// 이메일 에러
 const email = document.querySelector('.email');
 const emailError = document.querySelector('.email-error');
 const emptyEmail = document.querySelector('.empty-email');
@@ -22,17 +8,20 @@ email.addEventListener('focusout', function() {
       if(email.value.trim() === '') {
         emptyEmail.style.display = 'block';
         emailError.style.display = 'none';
+        email.classList.add('markInput');
       } else if(!emailPattern.test(email.value.trim())) {
         emptyEmail.style.display = 'none';
         emailError.style.display = 'block';
+        email.classList.add('markInput');
       }
         else { 
           emptyEmail.style.display = 'none';
           emailError.style.display = 'none';
+          email.classList.remove('markInput');
         }
 });
 
-//비밀번호 에러 메세지
+//비밀번호 에러 
 const password = document.querySelector('#password');
 const emptyPassword = document.querySelector('.empty-password');
 const passwordError = document.querySelector('.password-error');
@@ -41,12 +30,15 @@ password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
     emptyPassword.style.display = 'block';
     passwordError.style.display = 'none';
+    password.classList.add('markInput');
   }  else if(password.value.trim().length < 8) {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'block';
+      password.classList.add('markInput');
   }  else {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'none';
+      password.classList.remove('markInput');
     }
 });
 

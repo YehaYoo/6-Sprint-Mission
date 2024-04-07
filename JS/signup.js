@@ -1,16 +1,4 @@
-// 인풋 요소 비었을 때 테두리 설정
-const inputItems = document.querySelector('.input-items');
-inputItems.addEventListener('focusout', function(e) {
-  if (e.target.classList.contains('input-item')) {
-      if (e.target.value.trim() === '') {
-          e.target.classList.add('markInput');
-      } else {
-          e.target.classList.remove('markInput');
-      }
-   }
-});
-
-// 이메일 에러 메세지
+// 이메일 에러
 const email = document.querySelector('.email');
 const emailError = document.querySelector('.email-error');
 const emptyEmail = document.querySelector('.empty-email');
@@ -20,28 +8,34 @@ email.addEventListener('focusout', function() {
       if(email.value.trim() === '') {
         emptyEmail.style.display = 'block';
         emailError.style.display = 'none';
+        email.classList.add('markInput');
       } else if(!emailPattern.test(email.value.trim())) {
         emptyEmail.style.display = 'none';
         emailError.style.display = 'block';
+        email.classList.add('markInput');
       }
         else { 
           emptyEmail.style.display = 'none';
           emailError.style.display = 'none';
+          email.classList.remove('markInput');
         }
 });
 
-// 닉네임 에러 메세지
-const Nickname = document.querySelector('#nickname-input');
-const emtyNickname = document.querySelector('.empty-nickname');
-Nickname.addEventListener('focusout', function() {
-  if(Nickname.value.trim() === '') {
-    emtyNickname.style.display = 'block';
+// 닉네임 에러
+const nickName = document.querySelector('#nickname-input');
+const emtyNickName = document.querySelector('.empty-nickname');
+nickName.addEventListener('focusout', function() {
+  if(nickName.value.trim() === '') {
+    emtyNickName.style.display = 'block';
+    nickName.classList.add('markInput');
+
   } else { 
-    emtyNickname.style.display = 'none';
+    emtyNickName.style.display = 'none';
+    nickName.classList.remove('markInput');
     }
 });
 
-// 비밀번호 에러 메세지
+// 비밀번호 에러
 const password = document.querySelector('#password');
 const emptyPassword = document.querySelector('.empty-password');
 const passwordError = document.querySelector('.password-error');
@@ -49,23 +43,28 @@ password.addEventListener('focusout', function() {
   if(password.value.trim() === '') {
     emptyPassword.style.display = 'block';
     passwordError.style.display = 'none';
+    password.classList.add('markInput');
   }  else if(password.value.trim().length < 8) {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'block';
+      password.classList.add('markInput');
   }  else {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'none';
+      password.classList.remove('markInput');
     }
 });
 
-// 비밀번호 확인 에러 메세지
+// 비밀번호 확인 에러
 const passwordCheck = document.querySelector('#password-check');
 const passwordCheckError = document.querySelector('.passwordcheck-error');
 passwordCheck.addEventListener('focusout', function() {
   if(passwordCheck.value !== password.value) {
     passwordCheckError.style.display = 'block';
+    passwordCheck.classList.add('markInput');
   } else { 
     passwordCheckError.style.display = 'none';
+    passwordCheck.classList.remove('markInput');
     }
 });
 
@@ -74,7 +73,7 @@ const signinButton = document.querySelector('.signin-button');
 
 function checkValidity() {
   const emailValue = email.value.trim();
-  const nicknNameValue = Nickname.value.trim();
+  const nicknNameValue = nickName.value.trim();
   const passwordValue = password.value.trim();
   const passwordCheckValue = passwordCheck.value.trim();
 
