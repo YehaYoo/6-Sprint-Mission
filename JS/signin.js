@@ -21,7 +21,9 @@ email.addEventListener('focusout', function() {
         }
 });
 
-//비밀번호 에러 
+//비밀번호 에러
+const MIN_PASSWORD_LENGTH = 8;
+
 const password = document.querySelector('#password');
 const emptyPassword = document.querySelector('.empty-password');
 const passwordError = document.querySelector('.password-error');
@@ -31,7 +33,7 @@ password.addEventListener('focusout', function() {
     emptyPassword.style.display = 'block';
     passwordError.style.display = 'none';
     password.classList.add('markInput');
-  }  else if(password.value.trim().length < 8) {
+  }  else if(password.value.trim().length < MIN_PASSWORD_LENGTH) {
       emptyPassword.style.display = 'none';
       passwordError.style.display = 'block';
       password.classList.add('markInput');
