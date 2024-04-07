@@ -64,11 +64,15 @@ input::placeholder {
   background-color: var(--gray400);
   color: var(--white);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 20px;s
   pointer-events: none;
 }
 
-.signin-button:hover {
+.signin-button:disabled {
+  background-color: var(--gray400);
+}
+
+.active {
   background-color: var(--blue);
 }
 

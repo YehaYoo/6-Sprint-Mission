@@ -55,8 +55,16 @@ return emailValue !== '' && passwordValue !== '' && password.value.trim().length
 };
 
 function updateSigninButton() {
-  signinButton.style.pointerEvents = checkValidity() ? "auto" : "none";
+  if (checkValidity()) {
+    signinButton.disabled = false; 
+    signinButton.classList.add('active');
+  }
+  else {
+    signinButton.disabled = true; 
+    signinButton.classList.remove('active'); 
+  }
 }
+
 
 email.addEventListener('focusout', updateSigninButton);
 password.addEventListener('focusout', updateSigninButton);
