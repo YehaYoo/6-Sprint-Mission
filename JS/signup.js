@@ -113,20 +113,19 @@ password.addEventListener('focusout', updateSigninButton);
 passwordCheck.addEventListener('focusout', updateSigninButton);
 
 //visibility 버튼 조작 
-const passwordInputs = Array.from(document.querySelectorAll('.password-input'));
-const visibilityButtons = Array.from(document.querySelectorAll('.visibility'));
-const eyeIcons = Array.from(document.querySelectorAll('.eye-icon'));
+const passwordBoxes = Array.from(document.querySelectorAll(".password-box"));
 
-visibilityButtons.forEach((button, index) => {
-  button.addEventListener('click', () => {
-    togglePasswordVisibility(index);
-  });
+passwordBoxes.forEach(passwordBox => {
+	const passwordInput = passwordBox.querySelector(".password-input");
+	const visibilityButton = passwordBox.querySelector(".visibility");
+	const eyeIcon = passwordBox.querySelector(".eye-icon");
+
+	visibilityButton.addEventListener("click", () => {
+		passwordInput.type =
+			passwordInput.type === "password" ? "text" : "password";
+		eyeIcon.src =
+			passwordInput.type === "password"
+				? "/assets/btn_unvisibility.png"
+				: "/assets/btn_visibility.png";
+	});
 });
-
-function togglePasswordVisibility(index) {
-  const input = passwordInputs[index];ㄴ
-  const eyeIcon = eyeIcons[index];
-
-  input.type = input.type === 'password' ? 'text' : 'password';
-  eyeIcon.src = input.type === 'password' ? '/assets/btn_unvisibility.png' : '/assets/btn_visibility.png';
-}

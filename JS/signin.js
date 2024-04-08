@@ -80,17 +80,19 @@ email.addEventListener('focusout', updateSigninButton);
 password.addEventListener('focusout', updateSigninButton);
 
 //visibility 버튼 조작 
-const visibilityToggle = document.querySelector('.visibility');
-const eyeIcon = document.querySelector('.eye-icon');
+const passwordBoxes = Array.from(document.querySelectorAll(".password-box"));
 
-function togglePasswordVisibility() {
-  if (password.type === 'password') {
-    password.type = 'text';
-    eyeIcon.src = '/assets/btn_visibility.png';
-  } else {
-    password.type = 'password';
-    eyeIcon.src = '/assets/btn_unvisibility.png'; 
-  }
-}
+passwordBoxes.forEach(passwordBox => {
+	const passwordInput = passwordBox.querySelector(".password-input");
+	const visibilityButton = passwordBox.querySelector(".visibility");
+	const eyeIcon = passwordBox.querySelector(".eye-icon");
 
-visibilityToggle.addEventListener('click', togglePasswordVisibility);
+	visibilityButton.addEventListener("click", () => {
+		passwordInput.type =
+			passwordInput.type === "password" ? "text" : "password";
+		eyeIcon.src =
+			passwordInput.type === "password"
+				? "/assets/btn_unvisibility.png"
+				: "/assets/btn_visibility.png";
+	});
+});
