@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import styles from "./BestArticlesSection.module.css";
 import Image from "next/image";
+import formatDate from "../utils/formatData";
 
 export interface ArticleListProps {
   id: number;
@@ -15,15 +16,6 @@ export interface ArticleListProps {
     nickname: string;
   };
   createdAt: string;
-}
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
 }
 
 function BestArticlesCard({

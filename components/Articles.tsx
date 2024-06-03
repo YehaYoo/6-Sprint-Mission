@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import formatDate from "../utils/formatData";
 import styles from "./Articles.module.css";
 import Image from "next/image";
 
@@ -15,15 +16,6 @@ export interface ArticleListProps {
     nickname: string;
   };
   createdAt: string;
-}
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
 }
 
 function ArticleList({
