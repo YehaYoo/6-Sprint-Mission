@@ -26,13 +26,13 @@ export default function Boards() {
   const [articles, setArticles] = useState<ArticleListProps[]>([]);
   const [bestArticles, setBestArticles] = useState<ArticleListProps[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentOrder, setCurrentOrder] = useState<string>("recent");
+  const [currentOrder, setCurrentOrder] = useState<"recent" | "like">("recent");
   const [filteredArticles, setFilteredArticles] = useState<ArticleListProps[]>(
     []
   );
   const [limit, setLimit] = useState<number>(3);
 
-  const fetchArticles = async (order: string) => {
+  const fetchArticles = async (order: "recent" | "like") => {
     setLoading(true);
     try {
       const data = await getArticles({ limit: 10, order });
@@ -64,7 +64,7 @@ export default function Boards() {
     fetchBestArticles();
   }, [limit]);
 
-  const handleSortChange = async (order: string) => {
+  const handleSortChange = async (order: "recent" | "like") => {
     setCurrentOrder(order);
     await fetchArticles(order);
   };
