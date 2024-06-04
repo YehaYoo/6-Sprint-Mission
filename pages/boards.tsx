@@ -95,13 +95,13 @@ export default function Boards() {
     <div className={styles.articleSectionWrapper}>
       <section className={styles.articleSection}>
         <section className={styles.bestArticleSection}>
-          <h1 className={styles.articleSectionTitle}>베스트 게시글</h1>
+          <p className={styles.articleSectionTitle}>베스트 게시글</p>
           <BestArticlesSection articles={bestArticles} />
         </section>
         <section>
           <div>
             <div className={styles.articleSectioMenu}>
-              <h1 className={styles.articleSectionTitle}>게시글</h1>
+              <p className={styles.articleSectionTitle}>게시글</p>
               <button className={styles.articleSectionButton}>글쓰기</button>
             </div>
             <div className={styles.searchbarDropdownWrapper}>
