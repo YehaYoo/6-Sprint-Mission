@@ -21,7 +21,7 @@ const SearchBar = ({
     <form onSubmit={handleSubmit}>
       <input
         className={styles.searchBar}
-        type="text"
+        type="search"
         value={searchTerm}
         onChange={handleChange}
         placeholder="검색할 상품을 입력해주세요"
