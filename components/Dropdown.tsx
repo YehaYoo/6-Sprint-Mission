@@ -5,7 +5,7 @@ import styles from "./Dropdown.module.css";
 interface DropdownContainerProps {
   onSortByNewest: () => void;
   onSortByBest: () => void;
-  order: string;
+  order: "recent" | "like";
 }
 
 const Dropdown = ({
@@ -14,12 +14,8 @@ const Dropdown = ({
   order,
 }: DropdownContainerProps) => {
   const [isDropdownView, setDropdownView] = useState(false);
-  const [buttonText, setButtonText] = useState("");
 
-  useEffect(() => {
-    const text = order === "recent" ? "최신순" : "인기순";
-    setButtonText(text);
-  }, [order]);
+  const buttonText = order === "recent" ? "최신순" : "인기순";
 
   const handleClickContainer = () => {
     setDropdownView((prevState) => !prevState);
