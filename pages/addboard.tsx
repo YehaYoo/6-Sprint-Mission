@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import ImageInput from "../components/ImageInput";
 import style from "../styles/addboard.module.css";
 
@@ -6,13 +7,14 @@ interface Values {
   productName: string;
   description: string;
 }
-function AddItem() {
+
+function Addboard() {
   const [values, setValues] = useState<Values>({
     productName: "",
     description: "",
   });
 
-  const [image, setImage] = useState<Blob | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   const isButtonActive = values.productName && values.description.length > 0;
 
@@ -27,16 +29,54 @@ function AddItem() {
   };
 
   const handleImageChange = (file: File) => {
-    setImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleImageDelete = () => {
     setImage(null);
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // 테스트용 액세스 토큰
+    const accessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzE3NjY0MTAxLCJleHAiOjE3MTc2NjU5MDEsImlzcyI6InNwLXBhbmRhLW1hcmtldCJ9.0NPJH3Gqd4dQftLalRZdP8x5-7d5ZhSKqP6JBiYA73w";
+
+    try {
+      const postData = {
+        content: values.description,
+        title: values.productName,
+        ...(image && { image }),
+      };
+
+      const response = await axios.post(
+        "https://panda-market-api.vercel.app/articles",
+        postData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("게시물이 성공적으로 등록되었습니다.", response.data);
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        console.error("인증 실패: 액세스 토큰이 유효하지 않습니다.");
+      } else {
+        console.error("게시물 등록 중 오류 발생:", error.response.data);
+      }
+    }
+  };
+
   return (
     <div>
-      <form className={style.addItemForm}>
+      <form className={style.addItemForm} onSubmit={handleSubmit}>
         <div className={style.formTitle}>
           <h1 className={style.formTitleText}>게시글 쓰기</h1>
           <button
@@ -78,4 +118,4 @@ function AddItem() {
   );
 }
 
-export default AddItem;
+export default Addboard;

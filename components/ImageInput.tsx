@@ -5,7 +5,7 @@ import Image from "next/image";
 interface ImageInputProps {
   onImageChange: (file: File) => void;
   onImageDelete: () => void;
-  image: Blob | MediaSource | null;
+  image: string | null;
   className?: string;
 }
 
@@ -49,7 +49,7 @@ function ImageInput({ onImageChange, onImageDelete, image }: ImageInputProps) {
                 width={282}
                 height={282}
                 className={style.imgPreview}
-                src={URL.createObjectURL(image)}
+                src={image}
                 alt="이미지"
               />
               <button className={style.deleteButton} onClick={handleDelete}>
