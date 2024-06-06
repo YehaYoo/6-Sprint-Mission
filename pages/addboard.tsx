@@ -37,11 +37,11 @@ function AddItem() {
   return (
     <div>
       <form className={style.addItemForm}>
-        <div className="formTitle">
-          <h1>게시글 쓰기</h1>
+        <div className={style.formTitle}>
+          <h1 className={style.formTitleText}>게시글 쓰기</h1>
           <button
-            className={`addItemButton ${
-              isButtonActive ? "activeAddButton" : ""
+            className={`${style.addItemButton} ${
+              isButtonActive ? style.activeAddButton : ""
             }`}
             disabled={!isButtonActive}
             type="submit"
@@ -49,18 +49,18 @@ function AddItem() {
             등록
           </button>
         </div>
-        <div className="formInput">
-          <label>제목</label>
+        <div className={style.formInput}>
+          <label className={style.inputLabelText}>*제목</label>
           <input
-            className="formInputItem"
+            className={style.formInputItem}
             name="productName"
             value={values.productName}
             placeholder="제목을 입력해주세요"
             onChange={handleChange}
           />
-          <label>내용</label>
+          <label className={style.inputLabelText}>*내용</label>
           <textarea
-            className="productDescription"
+            className={style.productDescription}
             name="description"
             value={values.description}
             placeholder="내용을 입력해주세요"
