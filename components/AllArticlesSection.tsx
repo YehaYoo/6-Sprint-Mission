@@ -6,13 +6,19 @@ import SearchBar from "./SearchBar";
 import { getArticles } from "../lib/api";
 import styles from "../styles/boards.module.css";
 
-const AllArticlesSection = () => {
-  const [articles, setArticles] = useState<ArticleListProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+interface AllArticlesSectionProps {
+  initialAllArticles: ArticleListProps[];
+}
+
+const AllArticlesSection = ({
+  initialAllArticles,
+}: AllArticlesSectionProps) => {
+  const [articles, setArticles] =
+    useState<ArticleListProps[]>(initialAllArticles);
+  const [loading, setLoading] = useState<boolean>(false);
   const [currentOrder, setCurrentOrder] = useState<"recent" | "like">("recent");
-  const [filteredArticles, setFilteredArticles] = useState<ArticleListProps[]>(
-    []
-  );
+  const [filteredArticles, setFilteredArticles] =
+    useState<ArticleListProps[]>(initialAllArticles);
 
   const fetchArticles = async (order: "recent" | "like") => {
     setLoading(true);
@@ -33,7 +39,9 @@ const AllArticlesSection = () => {
   };
 
   useEffect(() => {
-    fetchArticles(currentOrder);
+    if (initialAllArticles.length === 0) {
+      fetchArticles(currentOrder);
+    }
   }, [currentOrder]);
 
   const debouncedFetchArticles = debounce(async (searchTerm: string) => {
