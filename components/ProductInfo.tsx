@@ -5,7 +5,7 @@ interface ProductInfoProps {
   article: {
     title: string;
     content: string;
-    image: string;
+    image: string | null;
     likeCount: number;
     createdAt: string;
     writer: {
@@ -29,7 +29,9 @@ function ProductInfo({ article }: ProductInfoProps) {
           </div>
         </div>
       </div>
-      <Image width={72} height={72} src={image} alt="best article image" />
+      {image && (
+        <Image width={72} height={72} src={image} alt="best article image" />
+      )}
       <p className="">{content}</p>
     </section>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ImageInput from "../../components/ImageInput";
+import { useRouter } from "next/router";
 import style from "../../styles/addboard.module.css";
 
 interface Values {
@@ -15,6 +16,7 @@ function Addboard() {
   });
 
   const [image, setImage] = useState<string | null>(null);
+  const router = useRouter();
 
   const isButtonActive = values.productName && values.description.length > 0;
 
@@ -43,9 +45,8 @@ function Addboard() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 테스트용 액세스 토큰
     const accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzE3NjY0MTAxLCJleHAiOjE3MTc2NjU5MDEsImlzcyI6InNwLXBhbmRhLW1hcmtldCJ9.0NPJH3Gqd4dQftLalRZdP8x5-7d5ZhSKqP6JBiYA73w";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzE3NzY1NDUwLCJleHAiOjE3MTc3NjcyNTAsImlzcyI6InNwLXBhbmRhLW1hcmtldCJ9.RK-OKMAgzsdXSMhjtUMzlb_aSgWusayrRrmh9kOiY-M";
 
     try {
       const postData = {
@@ -64,12 +65,16 @@ function Addboard() {
           },
         }
       );
+
       console.log("게시물이 성공적으로 등록되었습니다.", response.data);
+
+      const articleId = response.data.id;
+      router.push(`/addboard/${articleId}`);
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
         console.error("인증 실패: 액세스 토큰이 유효하지 않습니다.");
       } else {
-        console.error("게시물 등록 중 오류 발생:", error.response.data);
+        console.error("게시물 등록 중 오류 발생:", error.response?.data);
       }
     }
   };
