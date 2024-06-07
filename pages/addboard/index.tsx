@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import ImageInput from "../components/ImageInput";
-import style from "../styles/addboard.module.css";
+import ImageInput from "../../components/ImageInput";
+import style from "../../styles/addboard.module.css";
 
 interface Values {
   productName: string;

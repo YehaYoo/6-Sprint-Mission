@@ -52,3 +52,32 @@ export async function getBestArticles({
     throw error;
   }
 }
+
+export async function getArticleInfo(articleID: number) {
+  console.log(`Fetching article info for articleID: ${articleID}`);
+  const url = `/articles/${articleID}`;
+
+  try {
+    const data = await fetchData(url);
+    console.log(`Data fetched for articleID ${articleID}:`, data);
+    return data;
+  } catch (error) {
+    console.error(
+      `Failed to fetch article info for articleID ${articleID}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getArticleComments(articleID: number) {
+  const url = `/articles/${articleID}/comments?limit=10`;
+
+  try {
+    const data = await fetchData(url);
+    return data.list;
+  } catch (error) {
+    console.error(`Failed to fetch comments`, error);
+    throw error;
+  }
+}
