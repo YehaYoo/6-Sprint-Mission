@@ -28,7 +28,7 @@ function ArticleList({
 }: ArticleListProps) {
   const formattedDate = formatDate(createdAt);
   return (
-    <Link className={styles.Link} href={`/items/${id}`}>
+    <Link className={styles.Link} href={`/addboard/${id}`}>
       <section className={styles.articlesList}>
         <div className={styles.articlesListTopItems}>
           <p className={styles.articlesListTitle}>{title}</p>
