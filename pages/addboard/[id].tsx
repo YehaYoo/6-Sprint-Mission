@@ -29,13 +29,13 @@ interface Article {
   writer: Writer;
 }
 
-function useProductData(numericArticleID: number | null) {
+function useProductData(numericArticleID: number | undefined) {
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<{ message: string } | null>(null);
 
   useEffect(() => {
-    if (numericArticleID === null) {
+    if (numericArticleID === undefined) {
       setError({ message: "Invalid article ID" });
       setIsLoading(false);
       return;
@@ -68,13 +68,13 @@ function useProductData(numericArticleID: number | null) {
   return { article, isLoading, error };
 }
 
-function useCommentData(numericArticleID: number | null) {
+function useCommentData(numericArticleID: number | undefined) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<{ message: string } | null>(null);
 
   useEffect(() => {
-    if (numericArticleID === null) {
+    if (numericArticleID === undefined) {
       setError({ message: "Invalid article ID" });
       setIsLoading(false);
       return;
@@ -94,7 +94,7 @@ function useCommentData(numericArticleID: number | null) {
       });
   }, [numericArticleID]);
 
-  return { comments, isLoading, error };
+  return { comments, isLoading, error, setComments };
 }
 
 function CommunityFeedPage() {
@@ -102,8 +102,12 @@ function CommunityFeedPage() {
 
   const { id } = router.query;
 
-  const numericArticleID = id ? Number(id) : null;
-  console.log(id);
+  const numericArticleID: number | undefined =
+    typeof id === "string" ? parseInt(id, 10) : undefined;
+
+  if (numericArticleID === undefined || isNaN(numericArticleID)) {
+    return <div>Error: Invalid article ID</div>;
+  }
 
   const {
     article,
@@ -115,6 +119,7 @@ function CommunityFeedPage() {
     comments,
     isLoading: commentLoading,
     error: commentError,
+    setComments,
   } = useCommentData(numericArticleID);
 
   if (productLoading || commentLoading) {
@@ -129,7 +134,11 @@ function CommunityFeedPage() {
     <section className="CommunitySection">
       <div className={styles.communitySectionWrapper}>
         {article && <ProductInfo article={article} />}
-        <CommentSection comments={comments} />
+        <CommentSection
+          comments={comments}
+          numericArticleID={numericArticleID}
+          setComments={setComments}
+        />
         <Link href="/boards" className="CommunitySection__link">
           <p>목록으로 돌아가기</p>
         </Link>

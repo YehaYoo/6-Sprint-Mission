@@ -81,3 +81,27 @@ export async function getArticleComments(articleID: number) {
     throw error;
   }
 }
+
+export async function postComment(
+  articleID: number,
+  content: string,
+  accessToken: string
+) {
+  const url = `/articles/${articleID}/comments`;
+  try {
+    const response = await axiosInstance.post(
+      url,
+      { content },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to post comment`, error);
+    throw error;
+  }
+}
