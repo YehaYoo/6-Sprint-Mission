@@ -1,0 +1,83 @@
+.addItemForm {
+  margin: 94px 360px;
+}
+
+.formTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 94px;
+  margin-bottom: 16px;
+  height: 42px;
+}
+
+.formTitleText {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 33.41px;
+  text-align: left;
+}
+
+.addItemButton {
+  width: 88px;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  background-color: #9ca3af;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.activeAddButton {
+  background-color: #3692ff;
+}
+
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabelText {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.formInputItem,
+.productDescription {
+  border: none;
+  background-color: #f3f4f6;
+  height: 56px;
+  border-radius: 12px;
+  padding-left: 24px;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.formInputItem::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 16px;
+  vertical-align: middle;
+  padding-top: 74px;
+}
+
+.productDescription::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 16px;
+  position: absolute;
+  top: 16px;
+}
+
+.productDescription {
+  height: 282px;
+  resize: none;
+  padding-top: 17px;
+}
+
+@media screen and (max-width: 1279px) {
+  .addItemForm {
+    margin: 94px 16px;
+  }
+}

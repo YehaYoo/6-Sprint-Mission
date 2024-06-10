@@ -1,7 +1,10 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BestArticlesSection.module.css";
+import { getBestArticles } from "../lib/api";
 import Image from "next/image";
+import formatDate from "../utils/formatData";
+import useResizeHandler from "./useResizeHandler";
 
 export interface ArticleListProps {
   id: number;
@@ -15,15 +18,6 @@ export interface ArticleListProps {
     nickname: string;
   };
   createdAt: string;
-}
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
 }
 
 function BestArticlesCard({
@@ -76,19 +70,66 @@ function BestArticlesCard({
   );
 }
 
-interface ArticlesProps {
-  articles: ArticleListProps[];
+function getBestArticlesLimit() {
+  if (typeof window !== "undefined") {
+    const width = window.innerWidth;
+    if (width < 768) {
+      return 1;
+    } else if (width < 1280) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+  return 3;
 }
 
-function BestArticlesSection({ articles }: ArticlesProps) {
+function BestArticlesSection() {
+  const [bestArticles, setBestArticles] = useState<ArticleListProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [limit, setLimit] = useState<number>(getBestArticlesLimit());
+
+  const fetchBestArticles = async () => {
+    if (typeof window !== "undefined") {
+      const bestArticlesLimit = getBestArticlesLimit();
+      const bestArticles = await getBestArticles({
+        limit: bestArticlesLimit,
+        order: "like",
+      });
+      setBestArticles(bestArticles);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBestArticles();
+  }, [limit]);
+
+  const handleResize = () => {
+    setLimit(getBestArticlesLimit());
+    fetchBestArticles();
+  };
+
+  useResizeHandler(handleResize, 500);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <ul className={styles.bestArticles}>
-      {articles.map((article) => (
-        <li key={article.id}>
-          <BestArticlesCard {...article} />
-        </li>
-      ))}
-    </ul>
+    <div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul className={styles.bestArticles}>
+          {bestArticles.map((article) => (
+            <li key={article.id}>
+              <BestArticlesCard {...article} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 

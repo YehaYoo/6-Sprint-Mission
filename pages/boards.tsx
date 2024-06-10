@@ -1,123 +1,38 @@
-import React, { useEffect, useState } from "react";
-import debounce from "lodash-es/debounce";
-import Articles, { ArticleListProps } from "../components/Articles";
-import { getArticles, getBestArticles } from "../lib/api";
+import React from "react";
+import AllArticlesSection from "../components/AllArticlesSection";
 import BestArticlesSection from "../components/BestArticlesSection";
-import Dropdown from "../components/Dropdown";
-import SearchBar from "../components/SearchBar";
-import useResizeHandler from "../components/useResizeHandler";
 import styles from "../styles/boards.module.css";
+import { getArticles } from "../lib/api";
+import { ArticleListProps as AllArticleListProps } from "../components/Articles";
 
-const getBestArticlesLimit = () => {
-  if (typeof window !== "undefined") {
-    const width = window.innerWidth;
-    if (width < 768) {
-      return 1;
-    } else if (width < 1280) {
-      return 2;
-    } else {
-      return 3;
-    }
-  }
-  return 3;
-};
+interface BoardsProps {
+  initialAllArticles: AllArticleListProps[];
+}
 
-export default function Boards() {
-  const [articles, setArticles] = useState<ArticleListProps[]>([]);
-  const [bestArticles, setBestArticles] = useState<ArticleListProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [currentOrder, setCurrentOrder] = useState<string>("recent");
-  const [filteredArticles, setFilteredArticles] = useState<ArticleListProps[]>(
-    []
-  );
-  const [limit, setLimit] = useState<number>(3);
-
-  const fetchArticles = async (order: string) => {
-    setLoading(true);
-    try {
-      const data = await getArticles({ limit: 10, order });
-      setArticles(data);
-      setFilteredArticles(data);
-    } catch (error) {
-      console.error("Failed to fetch", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchBestArticles = async () => {
-    if (typeof window !== "undefined") {
-      const bestArticlesLimit = getBestArticlesLimit();
-      const bestArticles = await getBestArticles({
-        limit: bestArticlesLimit,
-        order: "like",
-      });
-      setBestArticles(bestArticles);
-    }
-  };
-
-  useEffect(() => {
-    fetchArticles(currentOrder);
-  }, [currentOrder]);
-
-  useEffect(() => {
-    fetchBestArticles();
-  }, [limit]);
-
-  const handleSortChange = async (order: string) => {
-    setCurrentOrder(order);
-    await fetchArticles(order);
-  };
-
-  const debouncedFetchArticles = debounce(async (searchTerm: string) => {
-    const filtered = articles.filter((article) =>
-      article.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredArticles(filtered);
-  }, 300);
-
-  const handleSearch = (searchTerm: string) => {
-    debouncedFetchArticles(searchTerm);
-  };
-
-  const handleResize = () => {
-    setLimit(getBestArticlesLimit());
-    fetchBestArticles();
-  };
-
-  useResizeHandler(handleResize, 500);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
+export default function Boards({ initialAllArticles }: BoardsProps) {
   return (
     <div className={styles.articleSectionWrapper}>
       <section className={styles.articleSection}>
-        <section className={styles.bestArticleSection}>
-          <h1 className={styles.articleSectionTitle}>베스트 게시글</h1>
-          <BestArticlesSection articles={bestArticles} />
-        </section>
+        <BestArticlesSection />
         <section>
-          <div>
-            <div className={styles.articleSectioMenu}>
-              <h1 className={styles.articleSectionTitle}>게시글</h1>
-              <button className={styles.articleSectionButton}>글쓰기</button>
-            </div>
-            <div className={styles.searchbarDropdownWrapper}>
-              <SearchBar onSearch={handleSearch} />
-              <div>
-                <Dropdown
-                  onSortByNewest={() => handleSortChange("recent")}
-                  onSortByBest={() => handleSortChange("like")}
-                  order={currentOrder}
-                />
-              </div>
-            </div>
-          </div>
-          <Articles articles={filteredArticles} />
+          <AllArticlesSection initialAllArticles={initialAllArticles} />
         </section>
       </section>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const allArticlesLimit = 10;
+
+  const initialAllArticles = await getArticles({
+    limit: allArticlesLimit,
+    order: "recent",
+  });
+
+  return {
+    props: {
+      initialAllArticles,
+    },
+  };
 }
