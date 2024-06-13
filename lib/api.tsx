@@ -105,3 +105,18 @@ export async function postComment(
     throw error;
   }
 }
+
+export const postArticle = async (accessToken: string, postData: any) => {
+  try {
+    const response = await axiosInstance.post("/articles", postData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { postArticle } from "@/lib/api";
 import ImageInput from "../../components/ImageInput";
 import { useRouter } from "next/router";
 import style from "../../styles/addboard.module.css";
@@ -46,7 +46,7 @@ function Addboard() {
     e.preventDefault();
 
     const accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzE3NzY1NDUwLCJleHAiOjE3MTc3NjcyNTAsImlzcyI6InNwLXBhbmRhLW1hcmtldCJ9.RK-OKMAgzsdXSMhjtUMzlb_aSgWusayrRrmh9kOiY-M";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE1LCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxODI4Njg4NywiZXhwIjoxNzE4Mjg4Njg3LCJpc3MiOiJzcC1wYW5kYS1tYXJrZXQifQ.GqJLcqeNDNzdQYrpyj3BBTt7pBKBom8tHsGVNFdO7rM";
 
     try {
       const postData = {
@@ -55,20 +55,11 @@ function Addboard() {
         ...(image && { image }),
       };
 
-      const response = await axios.post(
-        "https://panda-market-api.vercel.app/articles",
-        postData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await postArticle(accessToken, postData);
 
-      console.log("게시물이 성공적으로 등록되었습니다.", response.data);
+      console.log("게시물이 성공적으로 등록되었습니다.", response);
 
-      const articleId = response.data.id;
+      const articleId = response.id;
       router.push(`/addboard/${articleId}`);
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
