@@ -57,7 +57,7 @@ const AllArticlesSection = ({
 
   return (
     <div className={styles.articleSectionWrapper}>
-      <section className={styles.articleSection}>
+      <section className={styles.articleSectionItems}>
         <div className={styles.articleSectioMenu}>
           <p className={styles.articleSectionTitle}>게시글</p>
           <button className={styles.articleSectionButton}>글쓰기</button>

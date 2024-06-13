@@ -81,12 +81,22 @@ function CommentSection({
           등록
         </button>
       </form>
-      <div className="commentContainer">
+      <div className={styles.commentContainer}>
         {isEmpty(comments) ? (
-          <div className="commentEmpty">
-            <p className="commentEmptyMessage">
-              아직 댓글이 없어요, 지금 댓글을 달아보세요!
-            </p>
+          <div className={styles.commentEmptyWrapper}>
+            <div className={styles.commentEmpty}>
+              <Image
+                className={styles.commentEmptyImage}
+                src="/images/replyEmpty.svg"
+                width={120}
+                height={120}
+                alt="profile"
+              />
+              <p className={styles.commentEmptyMessage}>
+                아직 댓글이 없어요, <br />
+                지금 댓글을 달아보세요!
+              </p>
+            </div>
           </div>
         ) : (
           comments.map((comment) => (

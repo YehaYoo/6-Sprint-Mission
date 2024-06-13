@@ -60,7 +60,7 @@ function ProductInfo({ article }: ProductInfoProps) {
       </div>
       <div className={styles.articleContentSection}>
         {image && (
-          <Image width={72} height={72} src={image} alt="article image" />
+          <Image width={300} height={300} src={image} alt="article image" />
         )}
         <p className={styles.articleContent}>{content}</p>
       </div>
