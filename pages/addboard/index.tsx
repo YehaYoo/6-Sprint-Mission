@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { postArticle } from "@/lib/api";
-import ImageInput from "../../components/ImageInput";
+import ImageInput from "../../components/UI/ImageInput";
 import { useRouter } from "next/router";
 import style from "../../styles/addboard.module.css";
 

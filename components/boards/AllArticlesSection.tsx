@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import debounce from "lodash-es/debounce";
 import Articles, { ArticleListProps } from "./Articles";
-import Dropdown from "./Dropdown";
-import SearchBar from "./SearchBar";
-import { getArticles } from "../lib/api";
-import styles from "../styles/boards.module.css";
+import Dropdown from "../UI/Dropdown";
+import SearchBar from "../UI/SearchBar";
+import { getArticles } from "../../lib/api";
+import styles from "../../styles/boards.module.css";
 import { Order } from "@/types";
 
 interface AllArticlesSectionProps {

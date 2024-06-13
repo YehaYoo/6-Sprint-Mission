@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styles from "./BestArticlesSection.module.css";
-import { getBestArticles } from "../lib/api";
+import { getBestArticles } from "../../lib/api";
 import Image from "next/image";
-import formatDate from "../utils/formatData";
-import useResizeHandler from "./useResizeHandler";
+import formatDate from "../../utils/formatData";
+import useResizeHandler from "../../utils/useResizeHandler";
 
 export interface ArticleListProps {
   id: number;

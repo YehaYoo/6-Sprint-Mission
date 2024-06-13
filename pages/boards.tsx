@@ -1,9 +1,9 @@
 import React from "react";
-import AllArticlesSection from "../components/AllArticlesSection";
-import BestArticlesSection from "../components/BestArticlesSection";
+import AllArticlesSection from "../components/boards/AllArticlesSection";
+import BestArticlesSection from "../components/boards/BestArticlesSection";
 import styles from "../styles/boards.module.css";
 import { getArticles } from "../lib/api";
-import { ArticleListProps as AllArticleListProps } from "../components/Articles";
+import { ArticleListProps as AllArticleListProps } from "../components/boards/Articles";
 
 interface BoardsProps {
   initialAllArticles: AllArticleListProps[];

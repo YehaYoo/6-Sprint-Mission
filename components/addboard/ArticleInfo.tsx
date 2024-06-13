@@ -16,7 +16,7 @@ interface ProductInfoProps {
   };
 }
 
-function ProductInfo({ article }: ProductInfoProps) {
+function ArticleInfo({ article }: ProductInfoProps) {
   const { image, title, content, likeCount, createdAt, writer } = article;
 
   const formattedDate = formatDate(createdAt);
@@ -68,4 +68,4 @@ function ProductInfo({ article }: ProductInfoProps) {
   );
 }
 
-export default ProductInfo;
+export default ArticleInfo;

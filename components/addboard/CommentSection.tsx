@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postComment, getArticleComments } from "../lib/api";
+import { postComment, getArticleComments } from "../../lib/api";
 import { isEmpty } from "lodash";
 import { Comment } from "@/types";
 import Image from "next/image";

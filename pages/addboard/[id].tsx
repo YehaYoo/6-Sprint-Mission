@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ProductInfo from "../../components/ProductInfo";
-import CommentSection from "../../components/CommentSection";
+import ProductInfo from "../../components/addboard/ArticleInfo";
+import CommentSection from "../../components/addboard/CommentSection";
 import { getArticleInfo, getArticleComments } from "../../lib/api";
 import Link from "next/link";
 import Image from "next/image";

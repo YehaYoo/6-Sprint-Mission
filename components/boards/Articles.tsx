@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import formatDate from "../utils/formatData";
+import formatDate from "../../utils/formatData";
 import styles from "./Articles.module.css";
 import Image from "next/image";
 
