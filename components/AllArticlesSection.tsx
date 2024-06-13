@@ -28,8 +28,9 @@ const AllArticlesSection = ({
       const data = await getArticles({ limit: 10, order });
       setArticles(data);
       setFilteredArticles(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to fetch articles", error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }

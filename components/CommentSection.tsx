@@ -57,8 +57,9 @@ function CommentSection({
       setCommentText("");
       const updatedComments = await getArticleComments(numericArticleID);
       setComments(updatedComments);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to post comment:", error);
+      alert(error.message);
     }
   };
 
