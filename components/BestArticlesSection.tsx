@@ -117,19 +117,13 @@ function BestArticlesSection() {
   }
 
   return (
-    <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul className={styles.bestArticles}>
-          {bestArticles.map((article) => (
-            <li key={article.id}>
-              <BestArticlesCard {...article} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <ul className={styles.bestArticles}>
+      {bestArticles.map((article) => (
+        <li key={article.id}>
+          <BestArticlesCard {...article} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
