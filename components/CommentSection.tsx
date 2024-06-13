@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { postComment, getArticleComments } from "../lib/api";
 import { isEmpty } from "lodash";
+import Image from "next/image";
+import styles from "./CommentSection.module.css";
 
 function formatRelativeDate(dateString: number) {
   const date = new Date(dateString);
@@ -61,16 +63,21 @@ function CommentSection({
   };
 
   return (
-    <section className="commentSection">
-      <p className="comment__title">댓글 달기</p>
-      <form className="commentInput" onSubmit={handleSubmit}>
+    <section className={styles.commentSection}>
+      <p className={styles.commenTitle}>댓글 달기</p>
+      <form className={styles.commentForm} onSubmit={handleSubmit}>
         <textarea
-          className="commentInput__textarea"
+          className={styles.commenTextArea}
           placeholder="댓글을 입력해주세요"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
-        <button className="commentInput__Button" disabled={!commentText.trim()}>
+        <button
+          className={`${styles.commentInputButton} ${
+            commentText.trim() ? styles.commentInputButtonEnabled : ""
+          }`}
+          disabled={!commentText.trim()}
+        >
           등록
         </button>
       </form>
@@ -83,17 +90,30 @@ function CommentSection({
           </div>
         ) : (
           comments.map((comment) => (
-            <div className="comment" key={comment.id}>
-              <button className="commentKebab"></button>
-              <div>
-                <p className="commentContent">{comment.content}</p>
+            <div className={styles.commentWrapper} key={comment.id}>
+              <div className={styles.comment}>
+                <p className={styles.commentContent}>{comment.content}</p>
+                <button className={styles.commentKebab}>
+                  <Image
+                    src="/images/icKebab.svg"
+                    width={24}
+                    height={24}
+                    alt="kebab icon"
+                  />
+                </button>
               </div>
-              <div className="commentInfo">
-                <div className="commentInfoItems">
-                  <p className="commentInfoNickname">
+              <div className={styles.commentInfo}>
+                <Image
+                  src="/images/profile.svg"
+                  width={24}
+                  height={24}
+                  alt="profile"
+                />
+                <div className={styles.commentInfoItems}>
+                  <p className={styles.commentInfoNickname}>
                     {comment.writer.nickname}
                   </p>
-                  <p className="commentInfoUpdateAt">
+                  <p className={styles.commentInfoUpdateAt}>
                     {formatRelativeDate(comment.updatedAt)}
                   </p>
                 </div>

@@ -4,6 +4,7 @@ import ProductInfo from "../../components/ProductInfo";
 import CommentSection from "../../components/CommentSection";
 import { getArticleInfo, getArticleComments } from "../../lib/api";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "../../styles/[id].module.css";
 
 interface Comment {
@@ -131,7 +132,7 @@ function CommunityFeedPage() {
   }
 
   return (
-    <section className="CommunitySection">
+    <section>
       <div className={styles.communitySectionWrapper}>
         {article && <ProductInfo article={article} />}
         <CommentSection
@@ -139,8 +140,9 @@ function CommunityFeedPage() {
           numericArticleID={numericArticleID}
           setComments={setComments}
         />
-        <Link href="/boards" className="CommunitySection__link">
-          <p>목록으로 돌아가기</p>
+        <Link href="/boards" className={styles.communitySectionLink}>
+          <p className={styles.linkText}>목록으로 돌아가기</p>
+          <Image src="/images/icBack.svg" width={24} height={24} alt="back" />
         </Link>
       </div>
     </section>

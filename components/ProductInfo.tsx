@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import formatDate from "@/utils/formatData";
+import styles from "./CommentSection.module.css";
 
 interface ProductInfoProps {
   article: {
@@ -17,22 +19,51 @@ interface ProductInfoProps {
 function ProductInfo({ article }: ProductInfoProps) {
   const { image, title, content, likeCount, createdAt, writer } = article;
 
+  const formattedDate = formatDate(createdAt);
+
   return (
-    <section className="articleInfo">
-      <div className="articleInfotopItems">
-        <h1 className="">{title}</h1>
-        <div>
-          <p>{writer.nickname}</p>
-          <p>{createdAt}</p>
-          <div>
-            <p>{likeCount}</p>
+    <section className={styles.articleSectionItems}>
+      <div className={styles.articleInfoTopItems}>
+        <div className={styles.articleTitleSection}>
+          <h1 className={styles.articleTitle}>{title}</h1>
+          <button className={styles.commentKebab}>
+            <Image
+              src="/images/icKebab.svg"
+              width={24}
+              height={24}
+              alt="kebab icon"
+            />
+          </button>
+        </div>
+        <div className={styles.articleAuthorSection}>
+          <div className={styles.articleAuthor}>
+            <Image
+              src="/images/profile.svg"
+              width={24}
+              height={24}
+              alt="profile"
+            />
+            <p className={styles.articleWriter}>{writer.nickname}</p>
+            <p className={styles.articleCreatedAt}>{formattedDate}</p>
+          </div>
+
+          <div className={styles.favoriteCountSection}>
+            <Image
+              src="/images/favoriteIcon.svg"
+              width={24}
+              height={24}
+              alt="favorite icon"
+            />
+            <p className={styles.favoriteCount}>{likeCount}</p>
           </div>
         </div>
       </div>
-      {image && (
-        <Image width={72} height={72} src={image} alt="best article image" />
-      )}
-      <p className="">{content}</p>
+      <div className={styles.articleContentSection}>
+        {image && (
+          <Image width={72} height={72} src={image} alt="article image" />
+        )}
+        <p className={styles.articleContent}>{content}</p>
+      </div>
     </section>
   );
 }

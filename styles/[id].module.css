@@ -1,14 +1,33 @@
 .communitySectionWrapper {
-  margin: 102px 360px 0;
+  width: 1200px;
+  margin: 102px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 1200px;
+}
+
+.communitySectionLink {
+  width: 240px;
+  height: 48px;
+  border-radius: 40px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #3692ff;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.linkText {
+  color: #ffffff;
 }
 
 @media (max-width: 1279px) {
   .communitySectionWrapper {
+    width: 100%;
     margin: 102px 24px 0;
   }
 }
