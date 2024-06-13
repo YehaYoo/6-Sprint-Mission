@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Dropdown.module.css";
+import { Order } from "../components/AllArticlesSection";
 
 interface DropdownContainerProps {
   onSortByNewest: () => void;
   onSortByBest: () => void;
-  order: "recent" | "like";
+  order: Order;
 }
 
 const Dropdown = ({

@@ -10,17 +10,19 @@ interface AllArticlesSectionProps {
   initialAllArticles: ArticleListProps[];
 }
 
+export type Order = "recent" | "like";
+
 const AllArticlesSection = ({
   initialAllArticles,
 }: AllArticlesSectionProps) => {
   const [articles, setArticles] =
     useState<ArticleListProps[]>(initialAllArticles);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentOrder, setCurrentOrder] = useState<"recent" | "like">("recent");
+  const [currentOrder, setCurrentOrder] = useState<Order>("recent");
   const [filteredArticles, setFilteredArticles] =
     useState<ArticleListProps[]>(initialAllArticles);
 
-  const fetchArticles = async (order: "recent" | "like") => {
+  const fetchArticles = async (order: Order) => {
     setLoading(true);
     try {
       const data = await getArticles({ limit: 10, order });
@@ -33,7 +35,7 @@ const AllArticlesSection = ({
     }
   };
 
-  const handleSortChange = async (order: "recent" | "like") => {
+  const handleSortChange = async (order: Order) => {
     setCurrentOrder(order);
     await fetchArticles(order);
   };
