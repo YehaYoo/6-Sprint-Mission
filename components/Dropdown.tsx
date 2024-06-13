@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Dropdown.module.css";
-import { Order } from "../components/AllArticlesSection";
+import { Order } from "@/types";
 
 interface DropdownContainerProps {
   onSortByNewest: () => void;

@@ -5,12 +5,11 @@ import Dropdown from "./Dropdown";
 import SearchBar from "./SearchBar";
 import { getArticles } from "../lib/api";
 import styles from "../styles/boards.module.css";
+import { Order } from "@/types";
 
 interface AllArticlesSectionProps {
   initialAllArticles: ArticleListProps[];
 }
-
-export type Order = "recent" | "like";
 
 const AllArticlesSection = ({
   initialAllArticles,

@@ -6,16 +6,7 @@ import { getArticleInfo, getArticleComments } from "../../lib/api";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/[id].module.css";
-
-interface Comment {
-  id: number;
-  content: string;
-  updatedAt: number;
-  writer: {
-    image: string;
-    nickname: string;
-  };
-}
+import { Comment } from "@/types";
 
 interface Writer {
   nickname: string;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { postComment, getArticleComments } from "../lib/api";
 import { isEmpty } from "lodash";
+import { Comment } from "@/types";
 import Image from "next/image";
 import styles from "./CommentSection.module.css";
 
@@ -17,16 +18,6 @@ function formatRelativeDate(dateString: number) {
   } else {
     return `${diffDays}일 전`;
   }
-}
-
-interface Comment {
-  id: number;
-  content: string;
-  updatedAt: number;
-  writer: {
-    image: string;
-    nickname: string;
-  };
 }
 
 interface CommentProps {
