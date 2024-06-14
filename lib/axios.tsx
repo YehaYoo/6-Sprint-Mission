@@ -10,7 +10,6 @@ instance.interceptors.request.use(
       const accessToken = localStorage
         .getItem("accessToken")
         ?.replace(/"/gi, "");
-
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -27,11 +26,32 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    if (typeof window !== "undefined") {
-      alert(`ERROR: ${error.response?.data?.message}`);
+  async (error) => {
+    const originalRequest = error.config;
+    const { status } = error.response;
+
+    if (status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (refreshToken) {
+          const response = await axios.post("/auth/refresh", { refreshToken });
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem("accessToken", newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axios(originalRequest);
+        } else {
+          console.error("Refresh token is missing.");
+        }
+      } catch (refreshError) {
+        console.error("Failed to refresh access token:", refreshError);
+      }
     } else {
-      console.error(`ERROR: ${error.response?.data?.message}`);
+      if (typeof window !== "undefined") {
+        alert(`ERROR: ${error.response?.data?.message}`);
+      } else {
+        console.error(`ERROR: ${error.response?.data?.message}`);
+      }
     }
     return Promise.reject(error);
   }

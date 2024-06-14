@@ -15,9 +15,14 @@ export async function signUp(userData: any) {
 export async function signIn(userData: any) {
   try {
     const response = await axiosInstance.post("/auth/signIn", userData);
+    const { accessToken, refreshToken } = response.data;
+
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+
     return response.data;
   } catch (error) {
-    console.error("Failed to sign in:", error);
+    console.error("로그인 실패:", error);
     throw error;
   }
 }
