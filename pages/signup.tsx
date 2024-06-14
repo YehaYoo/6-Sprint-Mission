@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signUp } from "@/lib/api";
 import Image from "next/image";
 import styles from "../styles/loginPage.module.css";
 
@@ -83,6 +84,13 @@ function SignupPage() {
     updateSigninButton();
   }, [email, password, nickname, passwordCheck]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      router.push("/");
+    }
+  }, []);
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
@@ -105,9 +113,28 @@ function SignupPage() {
     setPasswordCheck(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/signin");
+
+    if (
+      !validateEmail() ||
+      !validatePassword() ||
+      !validateNickname() ||
+      !validatePasswordCheck()
+    ) {
+      return;
+    }
+    try {
+      await signUp({
+        email,
+        nickname,
+        password,
+        passwordConfirmation: passwordCheck,
+      });
+      router.push("/login");
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   const eyeIconSrc = isPasswordVisible
