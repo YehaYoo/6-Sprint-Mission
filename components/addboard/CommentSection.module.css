@@ -231,7 +231,8 @@
   .commentWrapper,
   .articleInfoTopItems,
   .commentSection,
-  .commenTextArea {
+  .commenTextArea,
+  .articleSectionItems {
     width: 343px;
   }
 }
