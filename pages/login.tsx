@@ -3,55 +3,36 @@ import { useRouter } from "next/router";
 import { signIn } from "@/lib/api";
 import Image from "next/image";
 import styles from "../styles/loginPage.module.css";
+import { useForm } from "react-hook-form";
 
 function SigninPage() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [isSigninButtonDisabled, setIsSigninButtonDisabled] =
-    useState<boolean>(true);
-  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const router = useRouter();
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const MIN_PASSWORD_LENGTH = 8;
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const validateEmail = (email: string) => {
-    if (email.trim() === "") {
-      setEmailError("이메일을 입력해주세요");
-    } else if (!emailPattern.test(email.trim())) {
-      setEmailError("잘못된 이메일 입니다");
-    } else {
-      setEmailError("");
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const onSubmit = async (data: any) => {
+    try {
+      const signInData = await signIn(data);
+      localStorage.setItem("accessToken", signInData.accessToken);
+      router.push("/");
+    } catch (error) {
+      console.error("Failed to sign in:", error);
+      alert("로그인에 실패했습니다.");
     }
   };
 
-  const validatePassword = (password: string) => {
-    if (password.trim() === "") {
-      setPasswordError("비밀번호를 입력해주세요");
-    } else if (password.length < MIN_PASSWORD_LENGTH) {
-      setPasswordError("비밀번호를 8자 이상 입력해주세요");
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  const updateSigninButton = () => {
-    if (
-      email.trim() !== "" &&
-      password.trim() !== "" &&
-      password.length >= MIN_PASSWORD_LENGTH
-    ) {
-      setIsSigninButtonDisabled(false);
-    } else {
-      setIsSigninButtonDisabled(true);
-    }
-  };
-
-  useEffect(() => {
-    updateSigninButton();
-  }, [email, password]);
+  const eyeIconSrc = isPasswordVisible
+    ? "/images/btnVisibilityOn.svg"
+    : "/images/btnVisibilityOff.svg";
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -59,33 +40,6 @@ function SigninPage() {
       router.push("/");
     }
   }, []);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const data = await signIn({ email, password });
-      localStorage.setItem("accessToken", data.accessToken);
-      router.push("/");
-    } catch (error) {
-      console.error("Failed to sign in:", error);
-      alert("로그인에 실패했습니다.");
-    }
-  };
-  const eyeIconSrc = isPasswordVisible
-    ? "/images/btnVisibilityOn.svg"
-    : "/images/btnVisibilityOff.svg";
 
   return (
     <section className={styles.signinWrapper}>
@@ -100,25 +54,33 @@ function SigninPage() {
             />
           </a>
         </header>
-        <form className={styles.signinInputItems} onSubmit={handleSubmit}>
+        <form
+          className={styles.signinInputItems}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {" "}
           <label className={styles.signinLabel} htmlFor="email-input">
             로그인
           </label>
           <input
             className={`${styles.inputItem} ${
-              emailError ? styles.markInput : ""
+              errors.email ? styles.markInput : ""
             }`}
-            name="email"
+            {...register("email", {
+              required: "이메일을 입력해주세요",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "잘못된 이메일 입니다",
+              },
+            })}
             type="text"
             placeholder="이메일을 입력해주세요"
             id="email-input"
             autoFocus
-            value={email}
-            onChange={handleEmailChange}
-            onBlur={() => validateEmail(email)}
           />
-          {emailError && <p className={styles.emailError}>{emailError}</p>}
-
+          {errors.email && typeof errors.email.message === "string" && (
+            <p className={styles.emailError}>{errors.email.message}</p>
+          )}
           <label className={styles.signinLabel} htmlFor="password">
             비밀번호
           </label>
@@ -126,17 +88,20 @@ function SigninPage() {
             <input
               id={styles.password}
               className={`${styles.passwordInput} ${styles.inputItem} ${
-                passwordError ? styles.markInput : ""
+                errors.password ? styles.markInput : ""
               }`}
-              name="password"
+              {...register("password", {
+                required: "비밀번호를 입력해주세요",
+                minLength: {
+                  value: 8,
+                  message: "비밀번호를 8자 이상 입력해주세요",
+                },
+              })}
               type={isPasswordVisible ? "text" : "password"}
               placeholder="비밀번호를 입력해주세요"
-              value={password}
-              onChange={handlePasswordChange}
-              onBlur={() => validatePassword(password)}
             />
-            {passwordError && (
-              <p className={styles.passwordError}>{passwordError}</p>
+            {errors.password && typeof errors.password.message === "string" && (
+              <p className={styles.passwordError}>{errors.password.message}</p>
             )}
             <button
               type="button"
@@ -154,10 +119,10 @@ function SigninPage() {
           </div>
           <button
             className={`${styles.signinButton} ${
-              isSigninButtonDisabled ? "" : styles.active
+              Object.keys(errors).length !== 0 ? "" : styles.active
             }`}
             type="submit"
-            disabled={isSigninButtonDisabled}
+            disabled={Object.keys(errors).length !== 0}
           >
             로그인
           </button>
@@ -191,5 +156,4 @@ function SigninPage() {
     </section>
   );
 }
-
 export default SigninPage;

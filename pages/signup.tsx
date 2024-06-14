@@ -1,88 +1,40 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { signUp } from "@/lib/api";
 import Image from "next/image";
 import styles from "../styles/loginPage.module.css";
 
 function SignupPage() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [nickname, setNickname] = useState<string>("");
-  const [passwordCheck, setPasswordCheck] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [nicknameError, setNicknameError] = useState<string>("");
-  const [passwordCheckError, setPasswordCheckError] = useState<string>("");
-  const [isSigninButtonDisabled, setIsSigninButtonDisabled] =
-    useState<boolean>(true);
-  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
   const router = useRouter();
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const MIN_PASSWORD_LENGTH = 8;
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const password = watch("password");
 
-  const validateEmail = () => {
-    if (email.trim() === "") {
-      setEmailError("이메일을 입력해주세요");
-      return false;
-    } else if (!emailPattern.test(email.trim())) {
-      setEmailError("잘못된 이메일입니다");
-      return false;
-    } else {
-      setEmailError("");
-      return true;
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const onSubmit = async (data: any) => {
+    try {
+      await signUp(data);
+      router.push("/login");
+    } catch (error) {
+      console.error("Failed to sign up:", error);
+      alert("회원가입에 실패했습니다.");
     }
   };
 
-  const validatePassword = () => {
-    if (password.trim() === "") {
-      setPasswordError("비밀번호를 입력해주세요");
-      return false;
-    } else if (password.length < MIN_PASSWORD_LENGTH) {
-      setPasswordError("비밀번호를 8자 이상 입력해주세요");
-      return false;
-    } else {
-      setPasswordError("");
-      return true;
-    }
-  };
-
-  const validateNickname = () => {
-    if (nickname.trim() === "") {
-      setNicknameError("닉네임을 입력해주세요");
-      return false;
-    } else {
-      setNicknameError("");
-      return true;
-    }
-  };
-
-  const validatePasswordCheck = () => {
-    if (passwordCheck.trim() === "") {
-      setPasswordCheckError("비밀번호를 다시 한 번 입력해주세요");
-      return false;
-    } else if (passwordCheck !== password) {
-      setPasswordCheckError("비밀번호가 일치하지 않습니다");
-      return false;
-    } else {
-      setPasswordCheckError("");
-      return true;
-    }
-  };
-
-  const updateSigninButton = () => {
-    const isValid =
-      validateEmail() &&
-      validatePassword() &&
-      validateNickname() &&
-      validatePasswordCheck();
-    setIsSigninButtonDisabled(!isValid);
-  };
-
-  useEffect(() => {
-    updateSigninButton();
-  }, [email, password, nickname, passwordCheck]);
+  const eyeIconSrc = isPasswordVisible
+    ? "/images/btnVisibilityOn.svg"
+    : "/images/btnVisibilityOff.svg";
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -90,56 +42,6 @@ function SignupPage() {
       router.push("/");
     }
   }, []);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-  };
-
-  const handlePasswordCheckChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPasswordCheck(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (
-      !validateEmail() ||
-      !validatePassword() ||
-      !validateNickname() ||
-      !validatePasswordCheck()
-    ) {
-      return;
-    }
-    try {
-      await signUp({
-        email,
-        nickname,
-        password,
-        passwordConfirmation: passwordCheck,
-      });
-      router.push("/login");
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
-  const eyeIconSrc = isPasswordVisible
-    ? "/images/btnVisibilityOn.svg"
-    : "/images/btnVisibilityOff.svg";
 
   return (
     <section className={styles.signinWrapper}>
@@ -154,24 +56,32 @@ function SignupPage() {
             />{" "}
           </Link>
         </header>
-        <form className={styles.signinInputItems} onSubmit={handleSubmit}>
+        <form
+          className={styles.signinInputItems}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <label className={styles.signinLabel} htmlFor="emailInput">
             이메일
           </label>
           <input
             id={styles.emailInput}
             className={`${styles.inputItem} ${
-              emailError ? styles.markInput : ""
+              errors.email ? styles.markInput : ""
             }`}
-            name="email"
+            {...register("email", {
+              required: "이메일을 입력해주세요",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "잘못된 이메일입니다",
+              },
+            })}
             type="text"
             placeholder="이메일을 입력해주세요"
             autoFocus
-            value={email}
-            onChange={handleEmailChange}
-            onBlur={validateEmail}
           />
-          {emailError && <p className={styles.emailError}>{emailError}</p>}
+          {errors.email && typeof errors.email.message === "string" && (
+            <p className={styles.emailError}>{errors.email.message}</p>
+          )}
 
           <label htmlFor="nicknameInput" className={styles.signinLabel}>
             닉네임
@@ -179,17 +89,16 @@ function SignupPage() {
           <input
             id={styles.nicknameInput}
             className={`${styles.inputItem} ${
-              nicknameError ? styles.markInput : ""
+              errors.nickname ? styles.markInput : ""
             }`}
-            name="nickname"
+            {...register("nickname", {
+              required: "닉네임을 입력해주세요",
+            })}
             type="text"
             placeholder="닉네임을 입력해주세요"
-            value={nickname}
-            onChange={handleNicknameChange}
-            onBlur={validateNickname}
           />
-          {nicknameError && (
-            <p className={styles.nicknameError}>{nicknameError}</p>
+          {errors.nickname && typeof errors.nickname.message === "string" && (
+            <p className={styles.nicknameError}>{errors.nickname.message}</p>
           )}
 
           <label htmlFor="password" className={styles.signinLabel}>
@@ -199,19 +108,21 @@ function SignupPage() {
             <input
               id={styles.password}
               className={`${styles.passwordInput} ${styles.inputItem} ${
-                passwordError ? styles.markInput : ""
+                errors.password ? styles.markInput : ""
               }`}
-              name="password"
+              {...register("password", {
+                required: "비밀번호를 입력해주세요",
+                minLength: {
+                  value: 8,
+                  message: "비밀번호를 8자 이상 입력해주세요",
+                },
+              })}
               type={isPasswordVisible ? "text" : "password"}
               placeholder="비밀번호를 입력해주세요"
-              value={password}
-              onChange={handlePasswordChange}
-              onBlur={validatePassword}
             />
-            {passwordError && (
-              <p className={styles.passwordError}>{passwordError}</p>
+            {errors.password && typeof errors.password.message === "string" && (
+              <p className={styles.passwordError}>{errors.password.message}</p>
             )}
-
             <button
               type="button"
               className={styles.visibility}
@@ -234,18 +145,22 @@ function SignupPage() {
             <input
               id={styles.passwordCheck}
               className={`${styles.passwordInput} ${styles.inputItem} ${
-                passwordCheckError ? styles.markInput : ""
+                errors.passwordCheck ? styles.markInput : ""
               }`}
-              name="passwordCheck"
+              {...register("passwordCheck", {
+                required: "비밀번호를 다시 한 번 입력해주세요",
+                validate: (value) =>
+                  value === password || "비밀번호가 일치하지 않습니다",
+              })}
               type="password"
               placeholder="비밀번호를 다시 한 번 입력해주세요"
-              value={passwordCheck}
-              onChange={handlePasswordCheckChange}
-              onBlur={validatePasswordCheck}
             />
-            {passwordCheckError && (
-              <p className={styles.passwordcheckError}>{passwordCheckError}</p>
-            )}
+            {errors.passwordCheck &&
+              typeof errors.passwordCheck.message === "string" && (
+                <p className={styles.passwordcheckError}>
+                  {errors.passwordCheck.message}
+                </p>
+              )}
             <button
               type="button"
               className={styles.visibility}
@@ -262,10 +177,10 @@ function SignupPage() {
           </div>
           <button
             className={`${styles.signinButton} ${
-              isSigninButtonDisabled ? "" : styles.active
+              Object.keys(errors).length !== 0 ? "" : styles.active
             }`}
             type="submit"
-            disabled={isSigninButtonDisabled}
+            disabled={Object.keys(errors).length !== 0}
           >
             회원가입
           </button>
