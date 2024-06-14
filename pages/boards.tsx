@@ -23,7 +23,7 @@ export default function Boards({ initialAllArticles }: BoardsProps) {
 }
 
 export async function getServerSideProps() {
-  const allArticlesLimit = 50;
+  const allArticlesLimit = 10;
 
   const initialAllArticles = await getArticles({
     limit: allArticlesLimit,

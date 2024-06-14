@@ -25,13 +25,16 @@ export async function signIn(userData: any) {
 interface URLSearchParamsProps {
   limit?: number;
   order?: string;
+  page?: number;
 }
 
 export async function getArticles({
+  page = 1,
   limit = 10,
   order = "recent",
 }: Partial<URLSearchParamsProps> = {}) {
   const query = new URLSearchParams({
+    page: page.toString(),
     pageSize: limit.toString(),
     orderBy: order,
   }).toString();

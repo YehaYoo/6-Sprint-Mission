@@ -3,6 +3,7 @@ import debounce from "lodash-es/debounce";
 import Articles, { ArticleListProps } from "./Articles";
 import Dropdown from "../UI/Dropdown";
 import SearchBar from "../UI/SearchBar";
+import PaginationButton from "../UI/PaginationButton";
 import { getArticles } from "../../lib/api";
 import styles from "../../styles/boards.module.css";
 import { Order } from "@/types";
@@ -14,17 +15,18 @@ interface AllArticlesSectionProps {
 const AllArticlesSection = ({
   initialAllArticles,
 }: AllArticlesSectionProps) => {
-  const [articles, setArticles] =
-    useState<ArticleListProps[]>(initialAllArticles);
+  const [articles, setArticles] = useState<ArticleListProps[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentOrder, setCurrentOrder] = useState<Order>("recent");
-  const [filteredArticles, setFilteredArticles] =
-    useState<ArticleListProps[]>(initialAllArticles);
+  const [filteredArticles, setFilteredArticles] = useState<ArticleListProps[]>(
+    []
+  );
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const fetchArticles = async (order: Order) => {
+  const fetchArticles = async (order: Order, page: number) => {
     setLoading(true);
     try {
-      const data = await getArticles({ limit: 10, order });
+      const data = await getArticles({ limit: 10, order, page });
       setArticles(data);
       setFilteredArticles(data);
     } catch (error: any) {
@@ -37,14 +39,17 @@ const AllArticlesSection = ({
 
   const handleSortChange = async (order: Order) => {
     setCurrentOrder(order);
-    await fetchArticles(order);
+    await fetchArticles(order, currentPage);
+  };
+
+  const handlePageChange = async (page: number) => {
+    setCurrentPage(page);
+    await fetchArticles(currentOrder, page);
   };
 
   useEffect(() => {
-    if (initialAllArticles.length === 0) {
-      fetchArticles(currentOrder);
-    }
-  }, [currentOrder]);
+    fetchArticles(currentOrder, currentPage);
+  }, [initialAllArticles]);
 
   const debouncedFetchArticles = debounce(async (searchTerm: string) => {
     const filtered = articles.filter((article) =>
@@ -77,6 +82,11 @@ const AllArticlesSection = ({
           </div>
         </div>
         <Articles articles={filteredArticles} />
+        <PaginationButton
+          totalPageNum={10}
+          activePageNum={currentPage}
+          onPageChange={handlePageChange}
+        />
       </section>
     </div>
   );
