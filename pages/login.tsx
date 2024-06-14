@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { signIn } from "@/lib/api";
 import Image from "next/image";
 import styles from "../styles/loginPage.module.css";
 
@@ -64,9 +65,16 @@ function SigninPage() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/items");
+    try {
+      const data = await signIn({ email, password });
+      localStorage.setItem("accessToken", data.accessToken);
+      router.push("/");
+    } catch (error) {
+      console.error("Failed to sign in:", error);
+      alert("로그인에 실패했습니다.");
+    }
   };
   const eyeIconSrc = isPasswordVisible
     ? "/images/btnVisibilityOn.svg"
