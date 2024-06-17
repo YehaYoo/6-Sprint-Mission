@@ -1,0 +1,42 @@
+.notFoundWrapper {
+  width: 100%;
+  margin-top: 102px;
+  display: flex;
+  justify-content: center;
+}
+
+.notFoundLinkItems {
+  width: 240px;
+  height: 48px;
+  background-color: #3692ff;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.notFoundLink {
+  text-decoration: none;
+}
+
+.notFoundLink:visited {
+  text-decoration: none;
+  color: white;
+}
+
+.notFoundLinkItems:hover {
+  transform: scale(1.03);
+}
+
+.notFoundLinkText {
+  color: #ffffff;
+  text-decoration: none;
+}
