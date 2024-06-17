@@ -148,8 +148,10 @@ function SigninPage() {
             </div>
           </div>
           <div className={styles.btm}>
-            판다마켓이 처음이신가요?
-            <a href="signup">회원가입</a>
+            판다마켓이 처음이신가요?&nbsp;
+            <a className={styles.btmText} href="signup">
+              회원가입
+            </a>
           </div>
         </form>
       </div>

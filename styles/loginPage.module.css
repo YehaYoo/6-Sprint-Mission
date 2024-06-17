@@ -23,7 +23,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: var(--gray800);
+  color: #1f2937;
 }
 
 .inputItem {
@@ -107,7 +107,7 @@
   align-items: center;
   background-color: #e6f2ff;
   border-radius: 8px;
-  color: var(--gray800);
+  color: #1f2937;
   font-weight: 500;
 }
 
@@ -120,6 +120,14 @@
   text-align: center;
   font-size: 15px;
   font-weight: 500;
+}
+
+.btmText {
+  text-decoration: none;
+}
+
+.btmText:visited {
+  color: #3692ff;
 }
 
 @media (max-width: 767px) {
