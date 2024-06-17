@@ -40,11 +40,8 @@ function CommentSection({
       return;
     }
 
-    const accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksInNjb3BlIjoicmVmcmVzaCIsImlhdCI6MTcxNzY1ODMzMCwiZXhwIjoxNzE4MjYzMTMwLCJpc3MiOiJzcC1wYW5kYS1tYXJrZXQifQ.D-jcuvSNCR65Qj1sbenHsi_EkABnh8xw8fGb49mD4AA";
-
     try {
-      await postComment(numericArticleID, commentText, accessToken);
+      await postComment(numericArticleID, commentText);
       setCommentText("");
       const updatedComments = await getArticleComments(numericArticleID);
       setComments(updatedComments);

@@ -199,7 +199,7 @@
 }
 
 .commentEmptyWrapper {
-  width: 696px;
+  width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -220,6 +220,7 @@
 
   .articleSectionItems,
   .commentWrapper,
+  .commentEmptyWrapper,
   .articleInfoTopItems,
   .commentSection,
   .commenTextArea {
@@ -232,6 +233,7 @@
   .articleInfoTopItems,
   .commentSection,
   .commenTextArea,
+  .commentEmptyWrapper,
   .articleSectionItems {
     width: 343px;
   }

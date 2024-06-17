@@ -208,7 +208,7 @@ function SignupPage() {
           </div>
           <div className={styles.btm}>
             이미 회원이신가요?
-            <a href="signin">로그인</a>
+            <a href="login">로그인</a>
           </div>
         </form>
       </div>

@@ -31,23 +31,28 @@ interface URLSearchParamsProps {
   limit?: number;
   order?: string;
   page?: number;
+  keyword?: string;
 }
 
 export async function getArticles({
   page = 1,
   limit = 10,
   order = "recent",
+  keyword = "",
 }: Partial<URLSearchParamsProps> = {}) {
   const query = new URLSearchParams({
     page: page.toString(),
     pageSize: limit.toString(),
     orderBy: order,
+    keyword: keyword,
   }).toString();
   const url = `/articles?${query}`;
 
   try {
     const response = await axiosInstance.get(url);
-    return response.data.list;
+    const { list, totalCount } = response.data;
+    const totalPages = Math.ceil(totalCount / limit);
+    return { articles: list, totalPages };
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     throw error;
