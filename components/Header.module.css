@@ -30,6 +30,9 @@
 }
 
 .loginButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 128px;
   height: 48px;
   font-weight: 600;
@@ -38,6 +41,8 @@
   color: #ffffff;
   border-style: none;
   background-color: #3692ff;
+  text-decoration: none;
+  text-align: center;
 }
 
 .profileButton {

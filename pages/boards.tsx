@@ -1,21 +1,28 @@
 import React from "react";
-import AllArticlesSection from "../components/AllArticlesSection";
-import BestArticlesSection from "../components/BestArticlesSection";
+import AllArticlesSection from "../components/boards/AllArticlesSection";
+import BestArticlesSection from "../components/boards/BestArticlesSection";
 import styles from "../styles/boards.module.css";
 import { getArticles } from "../lib/api";
-import { ArticleListProps as AllArticleListProps } from "../components/Articles";
+import { ArticleListProps as AllArticleListProps } from "../components/boards/Articles";
 
 interface BoardsProps {
   initialAllArticles: AllArticleListProps[];
+  initialTotalPages: number;
 }
 
-export default function Boards({ initialAllArticles }: BoardsProps) {
+export default function Boards({
+  initialAllArticles,
+  initialTotalPages,
+}: BoardsProps) {
   return (
     <div className={styles.articleSectionWrapper}>
       <section className={styles.articleSection}>
         <BestArticlesSection />
         <section>
-          <AllArticlesSection initialAllArticles={initialAllArticles} />
+          <AllArticlesSection
+            initialAllArticles={initialAllArticles}
+            initialTotalPages={initialTotalPages}
+          />
         </section>
       </section>
     </div>
@@ -25,14 +32,16 @@ export default function Boards({ initialAllArticles }: BoardsProps) {
 export async function getServerSideProps() {
   const allArticlesLimit = 10;
 
-  const initialAllArticles = await getArticles({
-    limit: allArticlesLimit,
-    order: "recent",
-  });
+  const { articles: initialAllArticles, totalPages: initialTotalPages } =
+    await getArticles({
+      limit: allArticlesLimit,
+      order: "recent",
+    });
 
   return {
     props: {
       initialAllArticles,
+      initialTotalPages,
     },
   };
 }

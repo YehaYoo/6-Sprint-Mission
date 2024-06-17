@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import formatDate from "../utils/formatData";
+import formatDate from "../../utils/formatData";
 import styles from "./Articles.module.css";
 import Image from "next/image";
 
@@ -18,7 +18,7 @@ export interface ArticleListProps {
   createdAt: string;
 }
 
-function ArticleList({
+function Article({
   id,
   title,
   image,
@@ -75,16 +75,18 @@ interface ArticlesProps {
   articles: ArticleListProps[];
 }
 
-function Articles({ articles }: ArticlesProps) {
+function ArticleList({ articles }: ArticlesProps) {
+  const articleList = articles || [];
+
   return (
     <ul className={styles.totalArticles}>
-      {articles.map((article) => (
+      {articleList.map((article) => (
         <li className={styles.articles} key={article.id}>
-          <ArticleList {...article} />
+          <Article {...article} />
         </li>
       ))}
     </ul>
   );
 }
 
-export default Articles;
+export default ArticleList;

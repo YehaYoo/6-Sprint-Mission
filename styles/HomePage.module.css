@@ -1,0 +1,272 @@
+.topBanner {
+  background-color: #cfe5ff;
+  min-height: 610px;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 130%;
+  background-image: url("../public/images/ImgHomeTop.svg");
+}
+
+.pillButton {
+  text-align: center;
+  margin: 0 auto;
+  padding: 17px;
+  width: 355px;
+  height: 60px;
+  font-size: 20px;
+  border-radius: 40px;
+  font-weight: 700;
+  background-color: #3692ff;
+  color: #ffffff;
+  display: block;
+  text-decoration: none;
+}
+
+.topBannerDescription {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 44.8px;
+  margin-top: 70px;
+  padding-top: 48px;
+  padding-bottom: 18px;
+  color: #374151;
+}
+
+.features {
+  padding: 51px 16px;
+}
+
+.feature {
+  margin-bottom: 64px;
+}
+
+.feature img {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.feature:nth-child(2) {
+  text-align: right;
+}
+
+.featureContent {
+  flex: 1;
+}
+
+.featureTitle {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 33.6px;
+  color: #374151;
+}
+
+.featureSubtitle {
+  color: #3692ff;
+  font-size: 16px;
+  line-height: 22s.4px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.featureDescription {
+  width: 400px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.2px;
+  letter-spacing: 0.08em;
+  margin-top: 20px;
+  color: #374151;
+}
+
+.searchDescription {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.2px;
+  text-align: right;
+  margin-top: 14px;
+}
+
+.breakOnDesktop br {
+  display: none;
+}
+
+.bottomBanner {
+  padding: 100px 0 329px;
+  background-image: url("../public/images/bottomSectionPanda.svg");
+  background-color: #cfe5ff;
+  height: 100%;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100%;
+}
+
+.bottomBannerDescription {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 44.8px;
+  color: #374151;
+}
+
+.footerSection {
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 104px;
+  height: 160px;
+  background-color: #111322;
+}
+
+#copyright {
+  color: #676767;
+}
+
+#footerMenu {
+  display: flex;
+  gap: 30px;
+}
+
+#footerMenu a {
+  color: #cfcfcf;
+  text-decoration: none;
+}
+
+#socialMedia {
+  display: flex;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .pillButton {
+    margin: 0 auto;
+  }
+
+  .bannerDescription {
+    margin: 0;
+  }
+
+  .topBanner {
+    height: 771px;
+    background-size: 120%;
+  }
+
+  .topBannerDescription br {
+    display: none;
+  }
+
+  .features {
+    padding-top: 24px;
+    padding-bottom: 16px;
+  }
+
+  .featureDescription {
+    font-size: 18px;
+    line-height: 21.6px;
+  }
+
+  .bottomBanner {
+    padding-top: 112px;
+    height: 971px;
+  }
+
+  .bottomBannerDescription {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 56px;
+    text-align: center;
+    color: #374151;
+  }
+}
+
+@media (min-width: 1280px) {
+  .topBanner {
+    padding-top: 183px;
+    text-align: left;
+    height: 540px;
+    background-position: 80% bottom;
+    background-size: 50%;
+  }
+
+  .topBannerDescription {
+    padding-top: 0;
+    padding-bottom: 32px;
+    margin-left: 358px;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 56px;
+    text-align: left;
+  }
+
+  .topBannerDescription br {
+    display: inline;
+  }
+
+  .pillButton {
+    margin-left: 358px;
+  }
+
+  .features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  .featureContent {
+    width: 400px;
+  }
+
+  .featureTitle {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 140%;
+  }
+
+  .searchDescription {
+    font-size: 24px;
+    line-height: 28.8px;
+  }
+
+  .feature {
+    margin: 138px 0;
+    height: 444px;
+    display: flex;
+    align-items: center;
+    gap: 5%;
+  }
+
+  .feature:nth-child(2) {
+    flex-direction: row-reverse;
+  }
+
+  .feature img {
+    width: 588px;
+    margin-bottom: 0;
+  }
+
+  .featureDescription {
+    font-size: 24px;
+    line-height: 28.8px;
+    margin-top: 24px;
+  }
+
+  .breakOnDesktop br {
+    display: inline;
+  }
+
+  .bottomBanner {
+    padding: 214px 320px;
+    height: 540px;
+    background-position: 70% bottom;
+    background-size: 50%;
+  }
+
+  .bottomBannerDescription {
+    text-align: left;
+  }
+
+  .footerSection {
+    height: 160px;
+    background-color: #111322;
+  }
+}

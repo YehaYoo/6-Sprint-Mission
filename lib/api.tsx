@@ -1,11 +1,28 @@
 import axiosInstance from "./axios";
 
-async function fetchData(url: string) {
+export async function signUp(userData: any) {
   try {
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.post("/auth/signUp", userData);
+    const accessToken = response.data.accessToken;
+    localStorage.setItem("accessToken", accessToken);
     return response.data;
   } catch (error) {
-    console.error("데이터 가져오기 실패:", error);
+    console.error("Failed to sign up:", error);
+    throw error;
+  }
+}
+
+export async function signIn(userData: any) {
+  try {
+    const response = await axiosInstance.post("/auth/signIn", userData);
+    const { accessToken, refreshToken } = response.data;
+
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+
+    return response.data;
+  } catch (error) {
+    console.error("로그인 실패:", error);
     throw error;
   }
 }
@@ -13,21 +30,29 @@ async function fetchData(url: string) {
 interface URLSearchParamsProps {
   limit?: number;
   order?: string;
+  page?: number;
+  keyword?: string;
 }
 
 export async function getArticles({
+  page = 1,
   limit = 10,
   order = "recent",
+  keyword = "",
 }: Partial<URLSearchParamsProps> = {}) {
   const query = new URLSearchParams({
+    page: page.toString(),
     pageSize: limit.toString(),
     orderBy: order,
+    keyword: keyword,
   }).toString();
   const url = `/articles?${query}`;
 
   try {
-    const data = await fetchData(url);
-    return data.list;
+    const response = await axiosInstance.get(url);
+    const { list, totalCount } = response.data;
+    const totalPages = Math.ceil(totalCount / limit);
+    return { articles: list, totalPages };
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     throw error;
@@ -45,8 +70,8 @@ export async function getBestArticles({
   const url = `/articles?${query}`;
 
   try {
-    const data = await fetchData(url);
-    return data.list;
+    const response = await axiosInstance.get(url);
+    return response.data.list;
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     throw error;
@@ -58,9 +83,9 @@ export async function getArticleInfo(articleID: number) {
   const url = `/articles/${articleID}`;
 
   try {
-    const data = await fetchData(url);
-    console.log(`Data fetched for articleID ${articleID}:`, data);
-    return data;
+    const response = await axiosInstance.get(url);
+    console.log(`Data fetched for articleID ${articleID}:`, response.data);
+    return response.data;
   } catch (error) {
     console.error(
       `Failed to fetch article info for articleID ${articleID}:`,
@@ -74,34 +99,30 @@ export async function getArticleComments(articleID: number) {
   const url = `/articles/${articleID}/comments?limit=10`;
 
   try {
-    const data = await fetchData(url);
-    return data.list;
+    const response = await axiosInstance.get(url);
+    return response.data.list;
   } catch (error) {
     console.error(`Failed to fetch comments`, error);
     throw error;
   }
 }
 
-export async function postComment(
-  articleID: number,
-  content: string,
-  accessToken: string
-) {
+export async function postComment(articleID: number, content: string) {
   const url = `/articles/${articleID}/comments`;
   try {
-    const response = await axiosInstance.post(
-      url,
-      { content },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axiosInstance.post(url, { content });
     return response.data;
   } catch (error) {
     console.error(`Failed to post comment`, error);
+    throw error;
+  }
+}
+
+export async function postArticle(postData: any) {
+  try {
+    const response = await axiosInstance.post("/articles", postData);
+    return response.data;
+  } catch (error) {
     throw error;
   }
 }
