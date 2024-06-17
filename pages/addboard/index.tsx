@@ -45,9 +45,6 @@ function Addboard() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE1LCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxODI4Njg4NywiZXhwIjoxNzE4Mjg4Njg3LCJpc3MiOiJzcC1wYW5kYS1tYXJrZXQifQ.GqJLcqeNDNzdQYrpyj3BBTt7pBKBom8tHsGVNFdO7rM";
-
     try {
       const postData = {
         content: values.description,
@@ -55,7 +52,7 @@ function Addboard() {
         ...(image && { image }),
       };
 
-      const response = await postArticle(accessToken, postData);
+      const response = await postArticle(postData);
 
       console.log("게시물이 성공적으로 등록되었습니다.", response);
 
