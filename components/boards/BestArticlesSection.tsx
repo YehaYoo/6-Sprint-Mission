@@ -71,15 +71,11 @@ function BestArticlesCard({
 }
 
 function getBestArticlesLimit() {
-  if (typeof window !== "undefined") {
-    const width = window.innerWidth;
-    if (width < 768) {
-      return 1;
-    } else if (width < 1280) {
-      return 2;
-    } else {
-      return 3;
-    }
+  const width = window.innerWidth;
+  if (width < 768) {
+    return 1;
+  } else if (width < 1280) {
+    return 2;
   }
   return 3;
 }
@@ -87,30 +83,31 @@ function getBestArticlesLimit() {
 function BestArticlesSection() {
   const [bestArticles, setBestArticles] = useState<ArticleListProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [limit, setLimit] = useState<number>(getBestArticlesLimit());
+  const [limit, setLimit] = useState<number>();
 
-  const fetchBestArticles = async () => {
-    if (typeof window !== "undefined") {
-      const bestArticlesLimit = getBestArticlesLimit();
-      const bestArticles = await getBestArticles({
-        limit: bestArticlesLimit,
-        order: "like",
-      });
-      setBestArticles(bestArticles);
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    setLimit(getBestArticlesLimit());
+  }, []);
 
   useEffect(() => {
     fetchBestArticles();
   }, [limit]);
 
-  const handleResize = () => {
-    setLimit(getBestArticlesLimit());
-    fetchBestArticles();
+  const fetchBestArticles = async () => {
+    const bestArticlesLimit = getBestArticlesLimit();
+    const bestArticles = await getBestArticles({
+      limit: bestArticlesLimit,
+      order: "like",
+    });
+    setBestArticles(bestArticles);
+    setLoading(false);
   };
 
-  useResizeHandler(handleResize, 500);
+  const handleResize = () => {
+    setLimit(getBestArticlesLimit());
+  };
+
+  useResizeHandler(handleResize, 300);
 
   if (loading) {
     return <p>Loading...</p>;
