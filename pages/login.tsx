@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { signIn } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthProvider";
 import Image from "next/image";
 import styles from "../styles/loginPage.module.css";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ function SigninPage() {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -21,8 +22,7 @@ function SigninPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      const signInData = await signIn(data);
-      localStorage.setItem("accessToken", signInData.accessToken);
+      await login(data);
       router.push("/");
     } catch (error) {
       console.error("Failed to sign in:", error);
@@ -35,11 +35,10 @@ function SigninPage() {
     : "/images/btnVisibilityOff.svg";
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
+    if (isAuthenticated) {
       router.push("/");
     }
-  }, []);
+  }, [isAuthenticated, router]);
 
   return (
     <section className={styles.signinWrapper}>
@@ -58,7 +57,6 @@ function SigninPage() {
           className={styles.signinInputItems}
           onSubmit={handleSubmit(onSubmit)}
         >
-          {" "}
           <label className={styles.signinLabel} htmlFor="email-input">
             로그인
           </label>
