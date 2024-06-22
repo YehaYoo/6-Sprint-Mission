@@ -1,8 +1,27 @@
 import axios from "axios";
 
+interface FailedQueueItem {
+  resolve: (value?: unknown) => void;
+  reject: (reason?: any) => void;
+}
+
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
+
+let isRefreshing = false;
+let failedQueue: FailedQueueItem[] = [];
+
+const processQueue = (error: any, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (token) {
+      prom.resolve(token);
+    } else {
+      prom.reject(error);
+    }
+  });
+  failedQueue = [];
+};
 
 instance.interceptors.request.use(
   (config) => {
@@ -23,36 +42,48 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
     const { status } = error.response;
 
     if (status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return axios(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
+
       try {
         const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken) {
-          const response = await axios.post("/auth/refresh", { refreshToken });
-          const newAccessToken = response.data.accessToken;
-          localStorage.setItem("accessToken", newAccessToken);
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return axios(originalRequest);
-        } else {
-          console.error("Refresh token is missing.");
+        if (!refreshToken) {
+          throw new Error("Refresh token is missing.");
         }
+
+        const response = await axios.post("/auth/refresh", { refreshToken });
+        const newAccessToken = response.data.accessToken;
+        localStorage.setItem("accessToken", newAccessToken);
+        processQueue(null, newAccessToken);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return axios(originalRequest);
       } catch (refreshError) {
-        console.error("Failed to refresh access token:", refreshError);
-      }
-    } else {
-      if (typeof window !== "undefined") {
-        alert(`ERROR: ${error.response?.data?.message}`);
-      } else {
-        console.error(`ERROR: ${error.response?.data?.message}`);
+        processQueue(refreshError, null);
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
 );
