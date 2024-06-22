@@ -11,12 +11,13 @@ function formatRelativeDate(dateString: number) {
   const diffTime = Math.abs(currentDate.getTime() - date.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) {
-    return "오늘";
-  } else if (diffDays === 1) {
-    return "어제";
-  } else {
-    return `${diffDays}일 전`;
+  switch (diffDays) {
+    case 0:
+      return "오늘";
+    case 1:
+      return "어제";
+    default:
+      return `${diffDays}일 전`;
   }
 }
 
