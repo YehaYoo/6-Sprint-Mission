@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import debounce from "lodash-es/debounce";
 import Articles, { ArticleListProps } from "./Articles";
 import Dropdown from "../UI/Dropdown";
@@ -13,6 +13,44 @@ interface AllArticlesSectionProps {
   initialTotalPages: number;
 }
 
+interface PaginationState {
+  currentOrder: Order;
+  currentPage: number;
+  searchKeyword: string;
+  totalPages: number;
+}
+
+type PaginationAction =
+  | { type: "SET_ORDER"; payload: Order }
+  | { type: "SET_PAGE"; payload: number }
+  | { type: "SET_KEYWORD"; payload: string }
+  | { type: "SET_TOTAL_PAGES"; payload: number };
+
+const initialState = (initialTotalPages: number): PaginationState => ({
+  currentOrder: "recent",
+  currentPage: 1,
+  searchKeyword: "",
+  totalPages: initialTotalPages,
+});
+
+const paginationReducer = (
+  state: PaginationState,
+  action: PaginationAction
+): PaginationState => {
+  switch (action.type) {
+    case "SET_ORDER":
+      return { ...state, currentOrder: action.payload, currentPage: 1 };
+    case "SET_PAGE":
+      return { ...state, currentPage: action.payload };
+    case "SET_KEYWORD":
+      return { ...state, searchKeyword: action.payload, currentPage: 1 };
+    case "SET_TOTAL_PAGES":
+      return { ...state, totalPages: action.payload };
+    default:
+      return state;
+  }
+};
+
 const AllArticlesSection = ({
   initialAllArticles,
   initialTotalPages,
@@ -20,10 +58,14 @@ const AllArticlesSection = ({
   const [articles, setArticles] =
     useState<ArticleListProps[]>(initialAllArticles);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentOrder, setCurrentOrder] = useState<Order>("recent");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [totalPages, setTotalPages] = useState<number>(initialTotalPages);
+
+  const [state, dispatch] = useReducer(
+    paginationReducer,
+    initialTotalPages,
+    initialState
+  );
+
+  const { currentOrder, currentPage, searchKeyword, totalPages } = state;
 
   const fetchArticles = async (
     order: Order,
@@ -36,7 +78,7 @@ const AllArticlesSection = ({
       console.log("API response:", response);
       const { articles, totalPages } = response;
       setArticles(articles);
-      setTotalPages(totalPages);
+      dispatch({ type: "SET_TOTAL_PAGES", payload: totalPages });
     } catch (error: any) {
       console.error("Failed to fetch articles", error);
       alert(error.message);
@@ -46,13 +88,12 @@ const AllArticlesSection = ({
   };
 
   const handleSortChange = async (order: Order) => {
-    setCurrentOrder(order);
-    setCurrentPage(1);
+    dispatch({ type: "SET_ORDER", payload: order });
     await fetchArticles(order, 1, searchKeyword);
   };
 
   const handlePageChange = async (page: number) => {
-    setCurrentPage(page);
+    dispatch({ type: "SET_PAGE", payload: page });
     await fetchArticles(currentOrder, page, searchKeyword);
   };
 
@@ -61,8 +102,7 @@ const AllArticlesSection = ({
   }, [initialAllArticles]);
 
   const debouncedFetchArticles = debounce(async (searchTerm: string) => {
-    setSearchKeyword(searchTerm);
-    setCurrentPage(1);
+    dispatch({ type: "SET_KEYWORD", payload: searchTerm });
     await fetchArticles(currentOrder, 1, searchTerm);
   }, 300);
 

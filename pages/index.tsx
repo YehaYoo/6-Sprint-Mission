@@ -9,11 +9,11 @@ function Homepage() {
       <main className={styles.withHeader}>
         <section className={styles.topBanner}>
           <div>
-            <h1 className={styles.topBannerDescription}>
+            <p className={styles.topBannerDescription}>
               일상의 모든 물건을&nbsp;
               <br />
               거래해 보세요
-            </h1>
+            </p>
             <Link href="/items" className={styles.pillButton}>
               구경하러 가기
             </Link>
@@ -29,14 +29,14 @@ function Homepage() {
               alt="인기 상품"
             />
             <div className={styles.featureContent}>
-              <h2 className={styles.featureSubtitle}>Hot item</h2>
-              <h1 className={styles.featureTitle}>
+              <p className={styles.featureSubtitle}>Hot item</p>
+              <p className={styles.featureTitle}>
                 인기 상품을{" "}
                 <span className={styles.breakOnDesktop}>
                   <br />
                 </span>
                 확인해 보세요
-              </h1>
+              </p>
               <p className={styles.featureDescription}>
                 가장 HOT한 중고거래 물품을
                 <br />
@@ -52,14 +52,14 @@ function Homepage() {
               alt="검색 기능"
             />
             <div className={styles.featureContent}>
-              <h2 className={styles.featureSubtitle}>Search</h2>
-              <h1 className={styles.featureTitle}>
+              <p className={styles.featureSubtitle}>Search</p>
+              <p className={styles.featureTitle}>
                 구매를 원하는
                 <span className={styles.breakOnDesktop}>
                   <br />
                 </span>
                 상품을 검색하세요
-              </h1>
+              </p>
               <p className={styles.searchDescription}>
                 구매하고 싶은 물품은 검색해서
                 <br />
@@ -75,14 +75,14 @@ function Homepage() {
               alt="판매 상품 등록"
             />
             <div className={styles.featureContent}>
-              <h2 className={styles.featureSubtitle}>Register</h2>
-              <h1 className={styles.featureTitle}>
+              <p className={styles.featureSubtitle}>Register</p>
+              <p className={styles.featureTitle}>
                 판매를 원하는{" "}
                 <span className={styles.breakOnDesktop}>
                   <br />
                 </span>
                 상품을 등록하세요
-              </h1>
+              </p>
               <p className={styles.featureDescription}>
                 어떤 물건이든 판매하고 싶은 상품을
                 <br />
@@ -94,11 +94,11 @@ function Homepage() {
 
         <section>
           <div className={styles.bottomBanner}>
-            <h1 className={styles.bottomBannerDescription}>
+            <p className={styles.bottomBannerDescription}>
               믿을 수 있는
               <br />
               판다마켓 중고거래
-            </h1>
+            </p>
           </div>
         </section>
       </main>
